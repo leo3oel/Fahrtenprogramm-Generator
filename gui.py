@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 import datetime
 from TeXport import *
+from changedictlist import *
 
 def func():
     print(0)
@@ -17,11 +18,13 @@ def makemenubar():
     mn.add_command(label = "Öffnen", command=notready)
     mn.add_command(label = "Speichern", command=notready)
     mn.add_command(label="Exportieren", command=export)
-    mn.add_command(label = 'Fahrt hinzufügen', command=notready)
+    mn.add_command(label = 'Fahrt hinzufügen', command=lambda: addfahrt(terminedic, mainwin))
 
 def export():
     texport(terminedic, 'preamble.tex', 'test.tex')
     makepdfanddisplay('test.tex')
+
+
 
 def hline(inrow, width):
     for i in range(width):
@@ -130,20 +133,6 @@ def printfahrten(fahrtennr=None):
 
 #test
 terminedic = []
-ansprechpartner = [
-        ['Leo', 'sport@kc-wuerzburg.de', 'm', True],
-        ['Sebastian', 'wildwasser@kc-wuerzburg.de', 'm', True],
-        ['Julia', 'jugend@kc-wuerzburg.de', 'w', 'True'],
-        ['Bernd Sachs', 'wildwasser@kanu-bayern.de', 'w', 'False']
-    ]
-sparten = [
-    'Allgemein',
-    'Jugend',
-    'Kanupolo',
-    'Wildwasser'
-]
-testsettings(terminedic)
-
 # main
 
 
