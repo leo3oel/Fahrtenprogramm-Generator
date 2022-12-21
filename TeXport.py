@@ -28,6 +28,7 @@ def daymonth(day):
 
 def makepdfanddisplay(filename):
     subprocess.run(["lualatex", filename])
+    subprocess.run(["lualatex", filename])
     subprocess.Popen(["zathura", filename[:-3]+"pdf"])
 
 
