@@ -1,3 +1,6 @@
+import datetime
+import subprocess
+
 def appenddictionarylist(liste, inSparte, inSpartennr, inStartDatum, inAnsprechpartner, inItems, inFahrtname, inEndDatum=None, inStartzeit=None, inEndzeit=None):
     liste.append({
         'Sparte' : inSparte,
@@ -13,19 +16,38 @@ def appenddictionarylist(liste, inSparte, inSpartennr, inStartDatum, inAnsprechp
     return liste
 
 
+def hourminute(time):
+    return "\\footnotesize{"+ "{:02d}".format(time.hour) + ":" + "{:02d}".format(time.minute) + "}"
+
+
+def daymonth(day):
+    return "{:02d}".format(day.day) + "." + "{:02d}".format(day.month)
+
+
+def makepdfanddisplay(filename):
+    subprocess.run(["lualatex", filename])
+    subprocess.Popen(["zathura", filename[:-3]+"pdf"])
+
+
+def structurizelist(list):
+    
+    # Sort List by Date
+    list = sorted(list, key=lambda i: i['StartDatum'])
+
+    # Make List of Sparten
+    spartenliste = []
+    for Fahrt in list:
+        if Fahrt['Sparte'] not in spartenliste:
+            spartenliste.insert(Fahrt['Spartennr'], Fahrt['Sparte'])
+    return spartenliste
+
+
 def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
 
-    # Sort List by Date
-    terminefilename = sorted(terminefilename, key=lambda i: i['StartDatum'])
-
-    # Make List of Sparten
-    spartenliste = []
-    for Fahrt in terminefilename:
-        if Fahrt['Sparte'] not in spartenliste:
-            spartenliste.insert(Fahrt['Spartennr'], Fahrt['Sparte'])
+    spartenliste = structurizelist(terminefilename)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -71,21 +93,31 @@ def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
 
                     # Print Marginnote
                     texfile.write("\\marginnote{")
-                    if (Fahrt["EndDatum"] != None and Fahrt["Startzeit"] != None and Fahrt["Endzeit"] != None):
-                        texfile.write(str(Fahrt['StartDatum']) + " - " + str(Fahrt["EndDatum"]) +"\\")
-                        texfile.write(Fahrt['Startzeit'] - Fahrt['Endzeit'])
-                    elif (Fahrt["EndDatum"] and Fahrt["Startzeit"]):
-                        texfile.write(str(Fahrt['StartDatum']) + " - " + str(Fahrt["EndDatum"]) +"\\")
-                        texfile.write("ab " + Fahrt['Startzeit'])
-                    elif Fahrt["EndDatum"] and Fahrt["Startzeit"] == None and Fahrt["Endzeit"] == None:
-                        texfile.write(str(Fahrt['StartDatum']) + " - " + str(Fahrt["EndDatum"]))
+                    if Fahrt["EndDatum"]:
+                        texfile.write(daymonth(Fahrt['StartDatum']) + " - " + daymonth(Fahrt["EndDatum"]))
+                        if Fahrt["Startzeit"] and Fahrt["Endzeit"]:
+                            texfile.write(" \\\\ ")
+                            texfile.write(hourminute(Fahrt['Startzeit']) + " - " + hourminute(Fahrt['Endzeit']))
+                        elif Fahrt["Startzeit"]:
+                            texfile.write(" \\\\ ")
+                            texfile.write("ab " + hourminute(Fahrt['Startzeit']))
                     else:
-                        texfile.write(str(Fahrt['StartDatum']))
+                        texfile.write(daymonth(Fahrt['StartDatum']))
+                        if Fahrt["Startzeit"] and Fahrt["Endzeit"]:
+                            texfile.write(" \\\\ ")
+                            texfile.write(hourminute(Fahrt['Startzeit']) + " - " +  hourminute(Fahrt['Endzeit']))
+                        elif Fahrt["Startzeit"]:
+                            texfile.write(" \\\\ ")
+                            texfile.write("ab " + hourminute(Fahrt['Startzeit']))
                     texfile.write("}\n")
 
                     # Print items
                     texfile.write("\\begin{itemize}\n")
-                    texfile.write("    \\item Ansprechpartner: " + Fahrt['Ansprechpartner'][0] + " \\href{"+Fahrt['Ansprechpartner'][1] + "}{" + "mailto:"  + Fahrt['Ansprechpartner'][1] + "}\n")
+                    if Fahrt['Ansprechpartner'][2] == 'w':
+                        texfile.write("    \\item Ansprechpartnerin: ")
+                    else:
+                        texfile.write("    \\item Ansprechpartner: ")
+                    texfile.write(Fahrt['Ansprechpartner'][0] + " \\href{"+ "mailto:"  +Fahrt['Ansprechpartner'][1] + "}{"+ Fahrt['Ansprechpartner'][1] + "}\n")
                     for item in Fahrt['items']:
                         texfile.write("    \\item " + item + "\n")
                     texfile.write("\\end{itemize}\n\n")
@@ -95,9 +127,9 @@ def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
 
 # Define Basics
 ansprechpartner = [
-    ['Leo', 'sport@kc-wuerzburg.de'],
-    ['Sebastian', 'wildwasser@kc-wuerzburg.de'],
-    ['Julia', 'jugend@kc-wuerzburg.de']
+    ['Leo', 'sport@kc-wuerzburg.de', 'm'],
+    ['Sebastian', 'wildwasser@kc-wuerzburg.de', 'm'],
+    ['Julia', 'jugend@kc-wuerzburg.de', 'w']
 ]
 terminedic = []
 
@@ -107,9 +139,9 @@ appenddictionarylist(
     inSparte = 'Allgemein',
     inFahrtname = "Arbeitsdienst",
     inSpartennr = 0,
-    inStartDatum = 20230101,
+    inStartDatum = datetime.date(2023,1,1),
     inAnsprechpartner = ansprechpartner[0],
-    inStartzeit= "9:30",
+    inStartzeit= datetime.time(9,0),
     inItems = ["Beispiel 1", "Text"]
 )
 appenddictionarylist(
@@ -117,8 +149,8 @@ appenddictionarylist(
     inSparte = 'Jugend',
     inFahrtname = "irgendwas für die jugend",
     inSpartennr = 1,
-    inStartDatum = 20230304,
-    inEndDatum = 20230307,
+    inStartDatum = datetime.date(2023,1,3),
+    inEndDatum = datetime.date(2023,1,5),
     inAnsprechpartner = ansprechpartner[2],
     inItems = ["Beispiel 2", "Text"]
 )
@@ -127,9 +159,9 @@ appenddictionarylist(
     inSparte = 'Kanupolo',
     inFahrtname = "Boote flicken",
     inSpartennr = 2,
-    inStartDatum = 202303016,
-    inStartzeit='15:00',
-    inEndzeit='19:00',
+    inStartDatum =  datetime.date(2023,4,6),
+    inStartzeit= datetime.time(12,0),
+    inEndzeit= datetime.time(15,0),
     inAnsprechpartner = ansprechpartner[0],
     inItems = ["Boote flicken"]
 )
@@ -138,11 +170,14 @@ appenddictionarylist(
     inSparte = 'Jugend',
     inFahrtname = "irgendwas für die jugend",
     inSpartennr = 1,
-    inStartDatum = 20230304,
-    inEndDatum = 20230307,
+    inStartDatum = datetime.date(2023,6,7),
+    inEndDatum = datetime.date(2023,6,9),
     inAnsprechpartner = ansprechpartner[2],
     inItems = ["Beispiel 2", "Text"]
 )
 
 
-print(texport(terminedic, "preamble.tex", "test.tex"))
+texport(terminedic, "preamble.tex", "test.tex")
+print("texport ok")
+makepdfanddisplay("test.tex")
+print("made pdf")
