@@ -25,6 +25,10 @@ def hourminute(time):
 def daymonth(day):
     return "{:02d}".format(day.day) + "." + "{:02d}".format(day.month)
 
+def daymonthyear(day):
+    if day:
+        return "{:02d}".format(day.day) + "." + "{:02d}".format(day.month) + "." + "{:04d}".format(day.year)
+
 
 def makepdfanddisplay(filename):
     subprocess.run(["lualatex", filename])
@@ -141,7 +145,7 @@ def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
 terminedic = []
 
 # Define Basics
-def testsettings():
+def testsettings(terminedic):
     # Name, Mail, geschlecht, KCW?
     ansprechpartner = [
         ['Leo', 'sport@kc-wuerzburg.de', 'm', True],
@@ -206,8 +210,8 @@ def testsettings():
         inItems = ["Paddeln auf der Salza", "Bissi Bootfahren"]
     )
 
-testsettings()
+""" testsettings()
 texport(terminedic, "preamble.tex", "test.tex")
 print("texport ok")
 makepdfanddisplay("test.tex")
-print("made pdf")
+print("made pdf") """
