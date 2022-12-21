@@ -16,25 +16,33 @@ def makemenubar():
     
     mn.add_command(label = "Öffnen", command=notready)
     mn.add_command(label = "Speichern", command=notready)
-    mn.add_command(label="Exportieren", command=notready)
+    mn.add_command(label="Exportieren", command=export)
     mn.add_command(label = 'Fahrt hinzufügen', command=notready)
 
+def export():
+    texport(terminedic, 'preamble.tex', 'test.tex')
+    makepdfanddisplay('test.tex')
 
 def hline(inrow, width):
     for i in range(width):
         ttk.Separator(master=mainwin, orient=HORIZONTAL).grid(row=inrow, column=i,sticky="ew")
 
-def savesettings(fahrtnr):
-    if not terminedic[fahrtnr]['Sparte']: 
+def savesettings(fahrtnr, fahrtwidget):
+    sparte =1
+
+    fahrtname = fahrtwidget.get()
+    if not sparte: 
         tkinter.messagebox.showinfo("Wert fehlt","Der Wert Sparte fehlt")
-    elif not terminedic[fahrtnr]['Spartennr']: 
-        tkinter.messagebox.showinfo("Wert fehlt","Der Wert Sparten Nummer fehlt")
-    elif not terminedic[fahrtnr]['Fahrtname']: 
+        return 0
+    elif not fahrtname: 
         tkinter.messagebox.showinfo("Wert fehlt","Der Wert Fahrtname fehlt")
-    elif not terminedic[fahrtnr]['StartDatum']: 
-        tkinter.messagebox.showinfo("Wert fehlt","Der Wert Start Datum fehlt")
-    elif not terminedic[fahrtnr]['Ansprechpartner']: 
-        tkinter.messagebox.showinfo("Wert fehlt","Der Wert Ansprechpartner fehlt")
+        return 0
+    
+    terminedic[fahrtnr]['Fahrtname'] = fahrtname
+
+    mainwin.update()
+    printfahrten()
+    
     
 
 def editfahrt(fahrtnr):
@@ -51,18 +59,23 @@ def editfahrt(fahrtnr):
     fahrt_name_desc = Label(edit, text="Fahrt Name:")
     fahrt_name_desc.grid(row=0, column=0,padx=5,pady=5,sticky=W)
 
-    fahrt_insert = Entry(edit, width=50)
+    fahrt_name = terminedic[fahrtnr]['Fahrtname']
+    fahrt_insert = Entry(edit, width=50, textvariable=fahrt_name)
     fahrt_insert.insert(0, terminedic[fahrtnr]['Fahrtname'])
     fahrt_insert.grid(row=0, column=1, padx=5,pady=5,sticky=E)
     
-    save = Button(edit, text = "Speichern", command=savesettings(fahrtnr))
+    save = Button(edit, text = "Speichern", command=lambda: savesettings(fahrtnr, fahrt_insert))
     save.grid(row=50,column=1)
 
     edit.mainloop()
 
 
-def printfahrten():
+def printfahrten(fahrtennr=None):
 
+    for widget in mainwin.winfo_children(): # destroy all widgets
+        widget.destroy()
+
+    makemenubar()
     mainwin.columnconfigure(0, weight =1) # Startdatum
     mainwin.columnconfigure(1, weight =1) # Enddatum
     mainwin.columnconfigure(2, weight =2) # Sparte
@@ -75,6 +88,7 @@ def printfahrten():
     name_label = []
     edit_buttons =[]
 
+    
     startdatum_label.append(Label(mainwin, text="Startdatum"))
     startdatum_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=W)
     
@@ -87,25 +101,31 @@ def printfahrten():
     name_label.append(Label(mainwin, text="Fahrtenname"))
     name_label[0].grid(column=3,row=0,padx=5,sticky=W)
 
-
     hline(1,5)
 
-    for increment in range(1,len(terminedic)+1):
-        
-        startdatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['StartDatum'])))
-        startdatum_label[increment].grid(column=0,row=increment+1,padx=5,pady=5, sticky=W)
 
-        enddatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['EndDatum'])))
-        enddatum_label[increment].grid(column=1,row=increment+1,padx=5,pady=5, sticky=W)
+    if not fahrtennr:
+        for increment in range(1,len(terminedic)+1):
+            
+            startdatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['StartDatum'])))
+            startdatum_label[increment].grid(column=0,row=increment+1,padx=5,pady=5, sticky=W)
 
-        sparte_label.append(Label(mainwin, text=terminedic[increment-1]['Sparte']))
-        sparte_label[increment].grid(column=2,row=increment+1,padx=5,pady=5, sticky=W)
+            enddatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['EndDatum'])))
+            enddatum_label[increment].grid(column=1,row=increment+1,padx=5,pady=5, sticky=W)
 
-        name_label.append(Label(mainwin, text=terminedic[increment-1]['Fahrtname']))
-        name_label[increment].grid(column=3,row=increment+1,padx=5,pady=5, sticky=W)
+            sparte_label.append(Label(mainwin, text=terminedic[increment-1]['Sparte']))
+            sparte_label[increment].grid(column=2,row=increment+1,padx=5,pady=5, sticky=W)
 
-        edit_buttons.append(Button(mainwin,text="Bearbeiten",command=lambda c=increment: editfahrt(c-1)))
-        edit_buttons[increment-1].grid(column=4, row=increment+1,padx=5,pady=5,sticky=E)
+            name_label.append(Label(mainwin, text=terminedic[increment-1]['Fahrtname']))
+            name_label[increment].grid(column=3,row=increment+1,padx=5,pady=5, sticky=W)
+
+            edit_buttons.append(Button(mainwin,text="Bearbeiten",command=lambda c=increment: editfahrt(c-1)))
+            edit_buttons[increment-1].grid(column=4, row=increment+1,padx=5,pady=5,sticky=E)
+    else:
+        startdatum_label[fahrtennr+1].config(text=daymonthyear(terminedic[fahrtennr]['StartDatum']))
+        enddatum_label[fahrtennr+1].config(text=daymonthyear(terminedic[fahrtennr]['EndDatum']))
+        sparte_label[fahrtennr+1].config(text=terminedic[fahrtennr]['Sparte'])
+        name_label[fahrtennr+1]["text"] = terminedic[fahrtennr]['Fahrtname']
 
 
 #test
@@ -135,7 +155,5 @@ mainwin = tkinter.Tk(screenName=None, baseName=None, useTk=1) # Create mainwin
 mainwin.geometry('960x540')
 mainwin.title("Fahrtenprogramm Generator")
 
-makemenubar()
 printfahrten()
-
 mainwin.mainloop()
