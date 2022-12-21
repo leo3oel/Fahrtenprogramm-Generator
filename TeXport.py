@@ -25,12 +25,18 @@ def texport(terminefilename, preamble):
             spartenliste.insert(Fahrt['Spartennr'], Fahrt['Sparte'])
 
     # Print out TeX
-    for Fahrt in terminefilename:
-        print(Fahrt['Sparte'])
-        print(str(Fahrt['StartDatum']) + " - " + str(Fahrt["EndDatum"]))
-        print(Fahrt['Ansprechpartner'][0] + " \\hyperlink{"+Fahrt['Ansprechpartner'][1] + "}{" + "mailto:"  + Fahrt['Ansprechpartner'][1] + "}")
-        for item in Fahrt['items']:
-            print("\\item " + item)
+    for sparte in spartenliste:
+        print(f"-------------{sparte}-------------")
+        for Fahrt in terminefilename:
+            if Fahrt['Sparte'] == sparte:
+                print(Fahrt['Sparte'])
+                if Fahrt["EndDatum"] != None:
+                    print(str(Fahrt['StartDatum']) + " - " + str(Fahrt["EndDatum"]))
+                else:
+                    print(str(Fahrt['StartDatum']))
+                print(Fahrt['Ansprechpartner'][0] + " \\hyperlink{"+Fahrt['Ansprechpartner'][1] + "}{" + "mailto:"  + Fahrt['Ansprechpartner'][1] + "}")
+                for item in Fahrt['items']:
+                    print("\\item " + item)
     return(spartenliste)
 
 # Define Basics
