@@ -5,6 +5,7 @@ import datetime
 from TeXport import *
 from changedictlist import *
 
+
 def func():
     print(0)
 
@@ -24,11 +25,6 @@ def export():
     texport(terminedic, 'preamble.tex', 'test.tex')
     makepdfanddisplay('test.tex')
 
-
-
-def hline(inrow, width):
-    for i in range(width):
-        ttk.Separator(master=mainwin, orient=HORIZONTAL).grid(row=inrow, column=i,sticky="ew")
 
 def savesettings(fahrtnr, fahrtwidget):
     sparte =1
@@ -104,7 +100,7 @@ def printfahrten(fahrtennr=None):
     name_label.append(Label(mainwin, text="Fahrtenname"))
     name_label[0].grid(column=3,row=0,padx=5,sticky=W)
 
-    hline(1,5)
+    hline(mainwin, 1,5)
 
 
     if not fahrtennr:
@@ -140,7 +136,7 @@ sparten = []
 
 
 
-mainwin = tkinter.Tk(screenName=None, baseName=None, useTk=1) # Create mainwin
+mainwin = Tk(screenName=None, baseName=None, useTk=1) # Create mainwin
 #Widgets here
 mainwin.geometry('960x540')
 mainwin.title("Fahrtenprogramm Generator")

@@ -1,7 +1,11 @@
 import tkinter.messagebox
 from TeXport import appenddictionarylist
 from tkinter import *
-from gui import hline
+from tkinter import ttk
+
+def hline(win, inrow, width):
+    for i in range(width):
+        ttk.Separator(master=win, orient=HORIZONTAL).grid(row=inrow, column=i,sticky="ew")
 
 def savefahrt(terminedic, fahrt_insert, sparte_insert, spartenr_insert, ansprechpart_insert, ansprechpartkcw_insert, startdatum_insert, startzeit_insert, enddatum_insert, endzeit_insert, fahrtname_insert, fließtext_insert, items_insert):
     
@@ -40,32 +44,29 @@ def savefahrt(terminedic, fahrt_insert, sparte_insert, spartenr_insert, ansprech
 def addsparte():
     print(0)
 
+def deletesparte(win, sparten,number):
+    sparten.pop(number)
+    printsparten(win, sparten)
+    win.update()
+
+
 def editsparten(add, sparten):
     
     spartewin=Toplevel(add)
     spartewin.title("Sparten bearbeiten")
     spartewin.geometry('480x270')
     
+    spartewin.columnconfigure(0, weight =1) # Startdatum
+    spartewin.columnconfigure(1, weight =1) # Enddatum
+    spartewin.columnconfigure(2, weight =1) # Sparte
+
     # Menubar
     mn = Menu(spartewin) 
     spartewin.config(menu=mn) 
     
     mn.add_command(label = "Sparte hinzufügen", command=addsparte)
 
-    spartennr_label = []
-    spartenname_label = []
-
-    spartennr_label.append(Label(spartewin, text="Spartennummer"))
-    spartennr_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=W)
-
-    spartenname_label.append(Label(spartewin, text="Spartename")) 
-    spartennr_label[0].grid(column=1,row=0,padx=5,pady=5, sticky=W)
-
-    hline(1,2)
-
-    
-
-    spartewin.mainloop()
+    printsparten(spartewin, sparten)
 
 
 
@@ -77,6 +78,33 @@ def editsparten(add, sparten):
     return(spartenname)
  """
 
+def printsparten(win, sparten):
+
+    for widget in win.winfo_children(): # destroy all widgets
+        widget.destroy()
+
+    spartennr_label = []
+    spartenname_label = []
+    delete_buttons = []
+
+    spartennr_label.append(Label(win, text="Spartennummer"))
+    spartennr_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=W)
+
+    spartenname_label.append(Label(win, text="Spartename")) 
+    spartenname_label[0].grid(column=1,row=0,padx=5,pady=5, sticky=W)
+
+    hline(win, 1,3)
+
+    for increment in range(len(sparten)):
+        
+        spartennr_label.append(Label(win, text=str(increment+1)))
+        spartennr_label[increment+1].grid(column=0, row=increment+2,pady=5,padx=5,sticky=W)
+
+        spartenname_label.append(Label(win, text=sparten[increment]))
+        spartenname_label[increment+1].grid(column=1, row=increment+2,pady=5,padx=5,sticky=W)
+
+        delete_buttons.append(Button(win, text="Sparte loeschen", command=lambda c=increment: deletesparte(win, sparten, c)))
+        delete_buttons[increment].grid(column=2, row=increment+2,pady=5,padx=5,sticky=W)
 
 def addfahrt(terminedic, mainwin, sparten):
     add=Toplevel(mainwin)
@@ -100,11 +128,11 @@ def addfahrt(terminedic, mainwin, sparten):
     sparte_desc = Label(add, text="Fahrt Name:")
     sparte_desc.grid(row=1, column=0,padx=5,pady=5,sticky=W)
 
-    sparten = [[1, "Allgemein"], [2, "Jugend"]]
+    sparten = ["Allgemein", 'Jugend']
 
     displaysparten = ["0 - Bitte Auswählen"]
-    for sparte in sparten:
-        displaysparten.append(str(sparte[0]) + " - " + sparte[1])
+    for sparte in range(len(sparten)):
+        displaysparten.append(str(sparte+1) + " - " + sparten[1])
 
     sparte = StringVar()
     sparte.set(displaysparten[0])
