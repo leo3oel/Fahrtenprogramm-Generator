@@ -18,7 +18,7 @@ def makemenubar():
     mn.add_command(label = "Öffnen", command=notready)
     mn.add_command(label = "Speichern", command=notready)
     mn.add_command(label="Exportieren", command=export)
-    mn.add_command(label = 'Fahrt hinzufügen', command=lambda: addfahrt(terminedic, mainwin))
+    mn.add_command(label = 'Fahrt hinzufügen', command=lambda: addfahrt(terminedic, mainwin, sparten))
 
 def export():
     texport(terminedic, 'preamble.tex', 'test.tex')
@@ -132,9 +132,10 @@ def printfahrten(fahrtennr=None):
 
 
 #test
-terminedic = []
-# main
 
+# main
+terminedic = []
+sparten = []
 
 
 
