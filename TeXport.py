@@ -120,7 +120,7 @@ def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
 
                     # Print Fließtext
                     if(Fahrt['Fließtext']):
-                        texfile.write("\mbox{}\\\\\\mbox{}\\\\"+Fahrt['Fließtext'] + "\\\\")
+                        texfile.write("\\mbox{}\\\\\\mbox{}\\\\"+Fahrt['Fließtext'] + "\\\\")
 
                     # Print items
                     texfile.write("\\begin{itemize}\n")
