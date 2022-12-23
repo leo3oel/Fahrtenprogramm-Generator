@@ -54,18 +54,6 @@ def editfahrt(fahrtnr):
     edit.columnconfigure(1, weight =1) # Enter Value/Select
     edit.columnconfigure(2, weight =1) # Only for calendar
 
-    
-    fahrt_name_desc = Label(edit, text="Fahrt Name:")
-    fahrt_name_desc.grid(row=0, column=0,padx=5,pady=5,sticky=W)
-
-    fahrt_name = terminedic[fahrtnr]['Fahrtname']
-    fahrt_insert = Entry(edit, width=50, textvariable=fahrt_name)
-    fahrt_insert.insert(0, terminedic[fahrtnr]['Fahrtname'])
-    fahrt_insert.grid(row=0, column=1, padx=5,pady=5,sticky=E)
-    
-    save = Button(edit, text = "Speichern", command=lambda: savesettings(fahrtnr, fahrt_insert))
-    save.grid(row=50,column=1)
-
     edit.mainloop()
 
 

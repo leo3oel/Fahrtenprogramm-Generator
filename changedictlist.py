@@ -60,12 +60,6 @@ def editsparten(add, sparten):
     spartewin.columnconfigure(1, weight =1) # Enddatum
     spartewin.columnconfigure(2, weight =1) # Sparte
 
-    # Menubar
-    mn = Menu(spartewin) 
-    spartewin.config(menu=mn) 
-    
-    mn.add_command(label = "Sparte hinzufügen", command=addsparte)
-
     printsparten(spartewin, sparten)
 
 
