@@ -15,7 +15,7 @@ class Editsparten(Toplevel):
         self.__currentsparten = sparten
         self.__makewindow()
         
-
+        self.protocol("WM_DELETE_WINDOW", mainwin.makewindow)
         self.mainloop()
 
     def __makewindow(self):
@@ -68,7 +68,7 @@ class Editsparten(Toplevel):
         self.update()
 
     def __callAddSparte(self):
-        addspartewin = AddSparte(self, sparten)
+        addspartewin = AddSparte(self, self.__currentsparten)
         self.__printwidgets()
 
 
@@ -105,7 +105,7 @@ class AddSparte(Toplevel):
         sparten_nr_label = Label(self, text="Sparten Nr:")
         sparten_nr_label.grid(row=1, column=0, padx=5,pady=5,sticky=W)
 
-        listlength = len(sparten)+1
+        listlength = len(self.__currentsparten)+1
 
         if listlength>1:
             sparten_nr_spinbox = Spinbox(self, from_= 1, to=listlength)
@@ -128,7 +128,7 @@ class AddSparte(Toplevel):
         else:
             sparten_nr = int(sparten_nr_e.get())-1
 
-        if (sparten_nr <0) or (sparten_nr>len(sparten)):
+        if (sparten_nr <0) or (sparten_nr>len(self.__currentsparten)):
             msgbox.showwarning("Eingabe falsch", "Bitte richtige Nummer eingeben")
             return 0
 
@@ -140,7 +140,7 @@ class AddSparte(Toplevel):
 
         
 
-mainwin = Mainwin()
+""" mainwin = Mainwin()
 sparten = ["Kanupolo", "Allgemein", "idk"]
 Editsparten(mainwin, sparten)
-mainwin.mainloop()
+mainwin.mainloop() """
