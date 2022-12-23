@@ -1,5 +1,8 @@
 import datetime
 import subprocess
+from DateTime import daymonthyear
+from DateTime import daymonth
+
 
 def appenddictionarylist(liste, inSparte, inSpartennr, inStartDatum, inAnsprechpartner, inItems, inFahrtname, inFließtext=None,inAnsprechpartnerKCW=None, inEndDatum=None, inStartzeit=None, inEndzeit=None):
     liste.append({
@@ -21,13 +24,6 @@ def appenddictionarylist(liste, inSparte, inSpartennr, inStartDatum, inAnsprechp
 def hourminute(time):
     return "\\footnotesize{"+ "{:02d}".format(time.hour) + ":" + "{:02d}".format(time.minute) + "}"
 
-
-def daymonth(day):
-    return "{:02d}".format(day.day) + "." + "{:02d}".format(day.month)
-
-def daymonthyear(day):
-    if day:
-        return "{:02d}".format(day.day) + "." + "{:02d}".format(day.month) + "." + "{:04d}".format(day.year)
 
 
 def makepdfanddisplay(filename):
