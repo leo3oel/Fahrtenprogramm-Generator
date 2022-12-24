@@ -7,6 +7,7 @@ from test import testsettings
 from DateTime import *
 import tkcalendar
 from tkcalendar import DateEntry
+from Ansprechpartner import Ansprechpartner
 
 class EditFahrten(Toplevel):
 
@@ -124,7 +125,7 @@ class EditFahrten(Toplevel):
         spartenwin = Editsparten(self, self.__currentsparten)
 
     def __editansprechpartner(self):
-        pass
+        Ansprechpartner(self, self.__ansprechpartner)
 
     def __makeenddat(self, *args):
         
