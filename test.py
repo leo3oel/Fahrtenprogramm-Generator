@@ -20,7 +20,7 @@ def testsettings():
         ['Leo', 'sport@kc-wuerzburg.de', 'm', True],
         ['Sebastian', 'wildwasser@kc-wuerzburg.de', 'm', True],
         ['Julia', 'jugend@kc-wuerzburg.de', 'w', 'True'],
-        ['Bernd Sachs', 'wildwasser@kanu-bayern.de', 'w', 'False']
+        ['Bernd Sachs', 'wildwasser@kanu-bayern.de', 'w', False]
     ]
     
 

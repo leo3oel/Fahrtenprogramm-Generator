@@ -15,6 +15,7 @@ class EditFahrten(Toplevel):
     __ansprechpartner = []
     __new = True
     __number = 0
+    
 
     def __init__(self, mainwin, sparten, fahrtenliste, ansprechpartnerliste, number):
 
@@ -33,7 +34,7 @@ class EditFahrten(Toplevel):
             self.__new = False
 
         self.__StartDatum = StringVar()
-        self.__EndDatum = StringVar()
+        self.__EndDatum = IntVar()
 
         self.minsize(500, 300)
         self.makewindow()
@@ -72,7 +73,6 @@ class EditFahrten(Toplevel):
         displaysparten = ["0 - Bitte Auswählen"]
         for sparte in range(len(self.__currentsparten)):
             displaysparten.append(str(sparte+1) + " - " + self.__currentsparten[sparte])
-
         sparte = StringVar()
         sparte.set(displaysparten[0])
         sparten_selec = OptionMenu(self, sparte, *displaysparten)#, command=getsparte)
@@ -80,25 +80,60 @@ class EditFahrten(Toplevel):
 
         # Startdatum
         startdat_entry = DateEntry(self, selectmode='day', textvariable=self.__StartDatum)
-        startdat_entry.grid(row=2,column=2)
+        startdat_entry.grid(row=2,column=1)
 
-        #self.__StartDatum.trace('w', self.__selectenddatum)
         # Enddatum
-        
-        
+        self.__enddat_entry = DateEntry(self, selectmode='day')
+        self.__enddat_entry.grid(row=3,column=1)
+        self.__enddat_entry.grid_remove()
 
-        self.__StartDatum.trace('w', lambda var_name, var_index, operation: self.__makeenddat(startdat_entry))
+        # Ansprechpartner
+        display_an = ["Bitte Auswählen"]
+        for ansprechpartner in range(len(self.__ansprechpartner)):
+            display_an.append(self.__ansprechpartner[ansprechpartner][0])
+        self.__ansprechpartner_sel = StringVar()
+        self.__ansprechpartner_sel.set(display_an[0])
+        ansprech_selec = OptionMenu(self, self.__ansprechpartner_sel, *display_an)
+        ansprech_selec.grid(row=4, column=1)
+
+        self.__ansprechpartner_sel.trace('w', self.__show_an_kcw)
+
+        # Ansprechpartner KCW
+        ansprechpartner_kcw = StringVar()
+        ansprechpartner_kcw.set(display_an[0])
+        self.__ansprech_kcw_selec = OptionMenu(self, ansprechpartner_kcw, *display_an)
+        self.__ansprech_kcw_selec.grid(row=5, column=1)
+        self.__ansprech_kcw_selec.grid_remove()
+
+    def __show_an_kcw(self, *args):
+        
+        selected = self.__ansprechpartner_sel.get()
+        ansprechpartner = [item[0] for item in self.__ansprechpartner]
+        
+        notkcw = not self.__ansprechpartner[ansprechpartner.index(selected)][3]
+
+        if notkcw:
+            self.__ansprech_kcw_selec.grid()
+            self.__ansprechpartner_kcw_desc.grid()
+        else:
+            self.__ansprech_kcw_selec.grid_remove()
+            self.__ansprechpartner_kcw_desc.grid_remove()
+
 
     def __editsparten(self):
         spartenwin = Editsparten(self, self.__currentsparten)
-    
-    def __makeenddat(self, startddat):
-        #https://stackoverflow.com/questions/66510020/select-date-range-with-tkinter
-        self.__StartDatum = startddat.get_date()
-        enddat_entry = DateEntry(self, selectmode='day')
-        enddat_entry.set_date(self.__StartDatum)
-        enddat_entry.grid(row=3,column=2)
 
+    def __editansprechpartner(self):
+        pass
+
+    def __makeenddat(self, *args):
+        
+        if self.__EndDatum.get():
+            self.__enddat_entry.grid()
+        else:
+            self.__enddat_entry.grid_remove()
+
+    
     def __printwidgetsedit(self):
 
         # Fahrtname
@@ -127,38 +162,38 @@ class EditFahrten(Toplevel):
         
 
 
-
     def __printwidgetsgeneral(self):
 
         # Sparten Name Eingabe
         sparte_desc = Label(self, text="Sparten Name:")
         sparte_desc.grid(row=1, column=0,padx=5,pady=5,sticky=W)
 
-        
-        # Sparten bearbeiten
-        sparten_edit_button = Button(self, text="Sparten bearbeiten", command=self.__editsparten)
+        sparten_edit_button = Button(self, text="bearbeiten", command=self.__editsparten)
         sparten_edit_button.grid(row=1,column=2,padx=5,pady=5,sticky=W)
 
         # Calendar
         startdat_desc = Label(self, text="Startdatum:")
         startdat_desc.grid(row=2, column=0,padx=5,pady=5,sticky=W)
 
-        #startdat_edit_button = Button(self, text="Datum bearbeiten", command=self.__editdate)
-        #startdat_edit_button.grid(row=2,column=2, padx=5,pady=5,sticky=W)
-
-        enddat_desc = Label(self, text="Enddatum:")
+        enddat_desc = Checkbutton(self, text="Enddatum:", command=self.__makeenddat, variable=self.__EndDatum, onvalue=1,offvalue=0)
         enddat_desc.grid(row=3, column=0,padx=5,pady=5,sticky=W)
 
-        #enddat_edit_button = Button(self, text="Datum bearbeiten", command=self.__editdate)
-        #enddat_edit_button.grid(row=3,column=2, padx=5,pady=5,sticky=W)
+        # Ansprechpartner
+        ansprechpartner_desc = Label(self, text='Ansprechpartner:')
+        ansprechpartner_desc.grid(row=4,column=0,padx=5,pady=5,sticky=W)
+        
+        ansprechpartner_edit = Button(self, text="bearbeiten", command=self.__editansprechpartner)
+        ansprechpartner_edit.grid(row=4,column=2,padx=5,pady=5,sticky=W)
+
+        # Ansprechpartner KCW
+        self.__ansprechpartner_kcw_desc = Label(self, text='Ansprechpartner KCW:')
+        self.__ansprechpartner_kcw_desc.grid(row=5,column=0,padx=5,pady=5,sticky=W)
+        self.__ansprechpartner_kcw_desc.grid_remove()
 
         # Save
         save = Button(self, text = "Speichern")
         save.grid(row=50,column=1)
 
-
-    def __editdate(self):
-        pass
 
 
 class Mainwin(tk.Tk):
