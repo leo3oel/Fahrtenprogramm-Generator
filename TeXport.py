@@ -16,19 +16,20 @@ def structurizelist(list):
     # Sort List by Date
     list = sorted(list, key=lambda i: i['StartDatum'])
 
-    # Make List of Sparten
+    """ # Make List of Sparten
     spartenliste = []
     for fahrt in list:
         if fahrt['Sparte'] not in spartenliste:
             spartenliste.insert(fahrt['Spartennr'], fahrt['Sparte'])
-    return spartenliste
+    return spartenliste """
 
 
 def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
-    spartenliste = structurizelist(terminefilename)
+    spartenliste = spartenlisteold
+    structurizelist(terminefilename)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -115,4 +116,3 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
                     texfile.write("\\end{itemize}\n\n")
             texfile.write("\n")
         texfile.write("\\end{document}")
-    return(spartenliste)

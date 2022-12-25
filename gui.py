@@ -22,11 +22,10 @@ class MainWin(tk.Tk):
         'Ansprechpartner' : ["Leo", "mail", 'm', True], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
         'AnsprechpartnerKCW' : None,
         'Fließtext' : None,
-        'items' : None # Liste mit Stichpunkten'
+        'items' : [] # Liste mit Stichpunkten'
         },
         {
         'Sparte' : "Kanupolo",
-        'Spartennr' : 0,
         'Fahrtname' : "Test",
         'Startzeit' : None,
         'Endzeit' : None,
@@ -35,11 +34,35 @@ class MainWin(tk.Tk):
         'Ansprechpartner' : ["Leo", "mail", 'm', True], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
         'AnsprechpartnerKCW' : None,
         'Fließtext' : None,
-        'items' : None # Liste mit Stichpunkten'
+        'items' : [] # Liste mit Stichpunkten'
         },
+        {
+        'Sparte' : "Kanupolo",
+        'Fahrtname' : "Test",
+        'Startzeit' : None,
+        'Endzeit' : None,
+        'StartDatum' : datetime.date(month=1,day=2,year=2023),
+        'EndDatum' : None,
+        'Ansprechpartner' : ["Leo", "mail", 'm', True], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
+        'AnsprechpartnerKCW' : None,
+        'Fließtext' : None,
+        'items' : [] # Liste mit Stichpunkten
+        },
+        {
+        'Sparte' : "Wildwasser",
+        'Fahrtname' : "Salza",
+        'Startzeit' : "09:00",
+        'Endzeit' : "19:00",
+        'StartDatum' : datetime.date(month=5,day=15,year=2023),
+        'EndDatum' : datetime.date(month=5,day=19,year=2023),
+        'Ansprechpartner' : ["bernd", "ww@verband.de", 'm', False], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
+        'AnsprechpartnerKCW' : ["Leo", "kcw@kcw.de", 'm', True],
+        'Fließtext' : "asd",
+        'items' : ["text", "text2"] # Liste mit Stichpunkten'
+        }
     ]
-    __sparten = ["Kanupolo"]
-    __ansprechpartner = []
+    __sparten = ["Kanupolo", "Wildwasser"]
+    __ansprechpartner = [["Leo", "kcw@kcw.de", 'm', True], ["bernd", "ww@verband.de", 'm', False]]
 
 
     def __init__(self):
@@ -114,6 +137,9 @@ class MainWin(tk.Tk):
             sparte_label[fahrtennr+1].config(text=self.__terminedic[fahrtennr]['Sparte'])
             name_label[fahrtennr+1]["text"] = self.__terminedic[fahrtennr]['Fahrtname']
         """
+
+    def __editfahrt(self, number):
+        EditFahrten(self, self.__sparten, self.__terminedic, self.__ansprechpartner, number)
 
 
     def __notready(self):
