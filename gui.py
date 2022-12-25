@@ -1,133 +1,135 @@
-import tkinter.messagebox
-from tkinter import ttk
-from tkinter import *
+import tkinter.messagebox as msgbox
+import tkinter as tk
+import tkinter.ttk as ttk
+from tkinter import scrolledtext
 import datetime
 from TeXport import *
-from changedictlist import *
+#from changedictlist import *
+from basicgui import hline
+from EditFahrten import EditFahrten
 
-
-def func():
-    print(0)
-
-def notready():
-    tkinter.messagebox.showinfo("Nicht fertig","Diese Funktion ist noch nicht fertiggestellt")
-
-def makemenubar():
-    mn = Menu(mainwin) 
-    mainwin.config(menu=mn) 
+class MainWin(tk.Tk):
     
-    mn.add_command(label = "Öffnen", command=notready)
-    mn.add_command(label = "Speichern", command=notready)
-    mn.add_command(label="Exportieren", command=export)
-    mn.add_command(label = 'Fahrt hinzufügen', command=lambda: addfahrt(terminedic, mainwin, sparten))
+    __terminedic = [
+        {
+        'Sparte' : "Kanupolo",
+        'Spartennr' : 0,
+        'Fahrtname' : "Test",
+        'Startzeit' : None,
+        'Endzeit' : None,
+        'StartDatum' : datetime.date(month=12,day=15,year=2023),
+        'EndDatum' : None,
+        'Ansprechpartner' : ["Leo", "mail", 'm', True], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
+        'AnsprechpartnerKCW' : None,
+        'Fließtext' : None,
+        'items' : None # Liste mit Stichpunkten'
+        }
+    ]
+    __sparten = ["Kanupolo"]
+    __ansprechpartner = []
 
-def export():
-    texport(terminedic, 'preamble.tex', 'test.tex')
-    makepdfanddisplay('test.tex')
+
+    def __init__(self):
+        
+        tk.Tk.__init__(self)
+        self.minsize(900, 450)
+        self.main_frame = tk.Frame(self)
+        self.user_info_label = tk.Label(self)
+        self.wm_title("Fahrtenbuch Generator")
+
+        self.printfahrten()
+        self.mainloop()
+
+    def printfahrten(self, fahrtennr=None):
+
+        for widget in self.winfo_children(): # destroy all widgets
+            widget.destroy()
+
+        self.__makemenubar()
+        self.columnconfigure(0, weight =1) # Startdatum
+        self.columnconfigure(1, weight =1) # Enddatum
+        self.columnconfigure(2, weight =2) # Sparte
+        self.columnconfigure(3, weight =4) # Name
+        self.columnconfigure(4, weight =1) # Pushbuttons
+
+        startdatum_label = []
+        enddatum_label = []
+        sparte_label = []
+        name_label = []
+        edit_buttons =[]
+
+        
+        startdatum_label.append(tk.Label(self, text="Startdatum"))
+        startdatum_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=tk.W)
+        
+        enddatum_label.append(tk.Label(self, text="Enddatum"))
+        enddatum_label[0].grid(column=1,row=0,padx=5,pady=5, sticky=tk.W)
+
+        sparte_label.append(tk.Label(self, text="Sparte"))
+        sparte_label[0].grid(column=2,row=0,padx=5,pady=5, sticky=tk.W)
+
+        name_label.append(tk.Label(self, text="Fahrtenname"))
+        name_label[0].grid(column=3,row=0,padx=5,sticky=tk.W)
+
+        fahrt_add_btn = tk.Button(self, text="Fahrt hinzufügen", command=lambda: self.__addfahrt(len(self.__terminedic)+1))
+        fahrt_add_btn.grid(column=4,row=0,padx=5,sticky=tk.E)
+
+        hline(self, 1,5)
 
 
-def savesettings(fahrtnr, fahrtwidget):
-    sparte =1
+        if not fahrtennr:
+            for increment in range(1,len(self.__terminedic)+1):
+                
+                startdatum_label.append(tk.Label(self, text=daymonthyear(self.__terminedic[increment-1]['StartDatum'])))
+                startdatum_label[increment].grid(column=0,row=increment+1,padx=5,pady=5, sticky=tk.W)
 
-    fahrtname = fahrtwidget.get()
-    if not sparte: 
-        tkinter.messagebox.showinfo("Wert fehlt","Der Wert Sparte fehlt")
-        return 0
-    elif not fahrtname: 
-        tkinter.messagebox.showinfo("Wert fehlt","Der Wert Fahrtname fehlt")
-        return 0
+                enddatum_label.append(tk.Label(self, text=daymonthyear(self.__terminedic[increment-1]['EndDatum'])))
+                enddatum_label[increment].grid(column=1,row=increment+1,padx=5,pady=5, sticky=tk.W)
+
+                sparte_label.append(tk.Label(self, text=self.__terminedic[increment-1]['Sparte']))
+                sparte_label[increment].grid(column=2,row=increment+1,padx=5,pady=5, sticky=tk.W)
+
+                name_label.append(tk.Label(self, text=self.__terminedic[increment-1]['Fahrtname']))
+                name_label[increment].grid(column=3,row=increment+1,padx=5,pady=5, sticky=tk.W)
+
+                edit_buttons.append(tk.Button(self,text="Bearbeiten",command=lambda c=increment: self.__editfahrt(c-1)))
+                edit_buttons[increment-1].grid(column=4, row=increment+1,padx=5,pady=5,sticky=tk.E)
+        """
+        else:
+            startdatum_label[fahrtennr+1].config(text=daymonthyear(self.__terminedic[fahrtennr]['StartDatum']))
+            enddatum_label[fahrtennr+1].config(text=daymonthyear(self.__terminedic[fahrtennr]['EndDatum']))
+            sparte_label[fahrtennr+1].config(text=self.__terminedic[fahrtennr]['Sparte'])
+            name_label[fahrtennr+1]["text"] = self.__terminedic[fahrtennr]['Fahrtname']
+        """
+
+
+    def __notready(self):
+
+        msgbox.showinfo("Nicht fertig","Diese Funktion ist noch nicht fertiggestellt")
+
+    def __makemenubar(self):
+
+        mn = tk.Menu(self) 
+        self.config(menu=mn) 
+        
+        mn.add_command(label = "Öffnen", command=self.__notready)
+        mn.add_command(label = "Speichern", command=self.__notready)
+        mn.add_command(label="Exportieren", command=self.__export)
+        #mn.add_command(label = 'Fahrt hinzufügen', command=lambda: self.__addfahrt(len(self.__terminedic)+1))
+
+    def __export(self):
+
+        texport(self, self.__sparten, 'preamble.tex', 'test.tex')
+        makepdfanddisplay('test.tex')
+
+    def __addfahrt(self, number):
+
+        EditFahrten(self, self.__sparten, self.__terminedic, self.__ansprechpartner, number)
+        
+
+
     
-    terminedic[fahrtnr]['Fahrtname'] = fahrtname
-
-    mainwin.update()
-    printfahrten()
-    
-    
-
-def editfahrt(fahrtnr):
-    edit=Toplevel(mainwin)
-    edit.title("Fahrt bearbeiten")
-    edit.geometry('960x540')
-    
-    # 3 columns
-    edit.columnconfigure(0, weight =2) # Description
-    edit.columnconfigure(1, weight =1) # Enter Value/Select
-    edit.columnconfigure(2, weight =1) # Only for calendar
-
-    edit.mainloop()
-
-
-def printfahrten(fahrtennr=None):
-
-    for widget in mainwin.winfo_children(): # destroy all widgets
-        widget.destroy()
-
-    makemenubar()
-    mainwin.columnconfigure(0, weight =1) # Startdatum
-    mainwin.columnconfigure(1, weight =1) # Enddatum
-    mainwin.columnconfigure(2, weight =2) # Sparte
-    mainwin.columnconfigure(3, weight =4) # Name
-    mainwin.columnconfigure(4, weight =1) # Pushbuttons
-
-    startdatum_label = []
-    enddatum_label = []
-    sparte_label = []
-    name_label = []
-    edit_buttons =[]
-
-    
-    startdatum_label.append(Label(mainwin, text="Startdatum"))
-    startdatum_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=W)
-    
-    enddatum_label.append(Label(mainwin, text="Enddatum"))
-    enddatum_label[0].grid(column=1,row=0,padx=5,pady=5, sticky=W)
-
-    sparte_label.append(Label(mainwin, text="Sparte"))
-    sparte_label[0].grid(column=2,row=0,padx=5,pady=5, sticky=W)
-
-    name_label.append(Label(mainwin, text="Fahrtenname"))
-    name_label[0].grid(column=3,row=0,padx=5,sticky=W)
-
-    hline(mainwin, 1,5)
-
-
-    if not fahrtennr:
-        for increment in range(1,len(terminedic)+1):
-            
-            startdatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['StartDatum'])))
-            startdatum_label[increment].grid(column=0,row=increment+1,padx=5,pady=5, sticky=W)
-
-            enddatum_label.append(Label(mainwin, text=daymonthyear(terminedic[increment-1]['EndDatum'])))
-            enddatum_label[increment].grid(column=1,row=increment+1,padx=5,pady=5, sticky=W)
-
-            sparte_label.append(Label(mainwin, text=terminedic[increment-1]['Sparte']))
-            sparte_label[increment].grid(column=2,row=increment+1,padx=5,pady=5, sticky=W)
-
-            name_label.append(Label(mainwin, text=terminedic[increment-1]['Fahrtname']))
-            name_label[increment].grid(column=3,row=increment+1,padx=5,pady=5, sticky=W)
-
-            edit_buttons.append(Button(mainwin,text="Bearbeiten",command=lambda c=increment: editfahrt(c-1)))
-            edit_buttons[increment-1].grid(column=4, row=increment+1,padx=5,pady=5,sticky=E)
-    else:
-        startdatum_label[fahrtennr+1].config(text=daymonthyear(terminedic[fahrtennr]['StartDatum']))
-        enddatum_label[fahrtennr+1].config(text=daymonthyear(terminedic[fahrtennr]['EndDatum']))
-        sparte_label[fahrtennr+1].config(text=terminedic[fahrtennr]['Sparte'])
-        name_label[fahrtennr+1]["text"] = terminedic[fahrtennr]['Fahrtname']
-
 
 #test
 
-# main
-terminedic = []
-sparten = []
-
-
-
-
-mainwin = Tk(screenName=None, baseName=None, useTk=1) # Create mainwin
-#Widgets here
-mainwin.geometry('960x540')
-mainwin.title("Fahrtenprogramm Generator")
-
-printfahrten()
-mainwin.mainloop()
+MainWin()

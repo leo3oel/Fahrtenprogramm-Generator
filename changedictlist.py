@@ -1,5 +1,5 @@
-import tkinter.messagebox
-from TeXport import appenddictionarylist
+
+from TeXport import 
 from tkinter import *
 from tkinter import ttk
 

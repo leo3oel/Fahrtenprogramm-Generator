@@ -4,27 +4,6 @@ from DateTime import daymonthyear
 from DateTime import daymonth
 
 
-def appenddictionarylist(liste, inSparte, inSpartennr, inStartDatum, inAnsprechpartner, inItems, inFahrtname, inFließtext=None,inAnsprechpartnerKCW=None, inEndDatum=None, inStartzeit=None, inEndzeit=None):
-    liste.append({
-        'Sparte' : inSparte,
-        'Spartennr' : inSpartennr,
-        'Fahrtname' : inFahrtname,
-        'Startzeit' : inStartzeit,
-        'Endzeit' : inEndzeit,
-        'StartDatum' : inStartDatum,
-        'EndDatum' : inEndDatum,
-        'Ansprechpartner' : inAnsprechpartner, # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
-        'AnsprechpartnerKCW' : inAnsprechpartnerKCW,
-        'Fließtext' : inFließtext,
-        'items' : inItems # Liste mit Stichpunkten
-    })
-    return liste
-
-
-def hourminute(time):
-    return "\\footnotesize{"+ "{:02d}".format(time.hour) + ":" + "{:02d}".format(time.minute) + "}"
-
-
 
 def makepdfanddisplay(filename):
     subprocess.run(["lualatex", filename])
@@ -35,22 +14,26 @@ def makepdfanddisplay(filename):
 def structurizelist(list):
     
     # Sort List by Date
-    list = sorted(list, key=lambda i: i['StartDatum'])
+    #list = sorted(list, key=lambda i: i['StartDatum'])
 
     # Make List of Sparten
     spartenliste = []
-    for Fahrt in list:
-        if Fahrt['Sparte'] not in spartenliste:
-            spartenliste.insert(Fahrt['Spartennr'], Fahrt['Sparte'])
+    for fahrt in list:
+        if fahrt['Sparte'] not in spartenliste:
+            spartenliste.insert(fahrt['Spartennr'], fahrt['Sparte'])
     return spartenliste
 
 
-def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
+def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
+    spartenliste = []
+    
+    #spartenliste = structurizelist(terminefilename)
+    for i in range(len(spartenlisteold)):
+        spartenliste.append([i, spartenlisteold[i]])
 
-    spartenliste = structurizelist(terminefilename)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -100,18 +83,18 @@ def texport(terminefilename, preamble, filenameOut, bemerkungenvorneweg=None):
                         texfile.write(daymonth(Fahrt['StartDatum']) + " - " + daymonth(Fahrt["EndDatum"]))
                         if Fahrt["Startzeit"] and Fahrt["Endzeit"]:
                             texfile.write(" \\\\ ")
-                            texfile.write(hourminute(Fahrt['Startzeit']) + " - " + hourminute(Fahrt['Endzeit']))
+                            texfile.write(Fahrt['Startzeit'] + " - " + Fahrt['Endzeit'])
                         elif Fahrt["Startzeit"]:
                             texfile.write(" \\\\ ")
-                            texfile.write("ab " + hourminute(Fahrt['Startzeit']))
+                            texfile.write("ab " + Fahrt['Startzeit'])
                     else:
                         texfile.write(daymonth(Fahrt['StartDatum']))
                         if Fahrt["Startzeit"] and Fahrt["Endzeit"]:
                             texfile.write(" \\\\ ")
-                            texfile.write(hourminute(Fahrt['Startzeit']) + " - " +  hourminute(Fahrt['Endzeit']))
+                            texfile.write(Fahrt['Startzeit']+ " - " +  Fahrt['Endzeit'])
                         elif Fahrt["Startzeit"]:
                             texfile.write(" \\\\ ")
-                            texfile.write("ab " + hourminute(Fahrt['Startzeit']))
+                            texfile.write("ab " + Fahrt['Startzeit'])
                     texfile.write("}\n")
 
                     # Print Fließtext

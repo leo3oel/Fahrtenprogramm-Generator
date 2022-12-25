@@ -1,4 +1,4 @@
-from TeXport import appenddictionarylist
+from EditFahrten import appenddictionarylist
 import datetime
 import tkinter as tk
 from tkinter import ttk
@@ -19,8 +19,8 @@ def testsettings():
     ansprechpartner = [
         ['Leo', 'sport@kc-wuerzburg.de', 'm', True],
         ['Sebastian', 'wildwasser@kc-wuerzburg.de', 'm', True],
-        ['Julia', 'jugend@kc-wuerzburg.de', 'w', 'True'],
-        ['Bernd Sachs', 'wildwasser@kanu-bayern.de', 'w', False]
+        ['Julia', 'jugend@kc-wuerzburg.de', 'w', True],
+        ['Bernd Sachs', 'wildwasser@kanu-bayern.de', 'm', False]
     ]
     
 

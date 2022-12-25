@@ -2,7 +2,6 @@ import tkinter.messagebox as msgbox
 import tkinter as tk
 import tkinter.ttk as ttk
 from basicgui import *
-from test import Mainwin
 
 class Editsparten(Toplevel):
 
