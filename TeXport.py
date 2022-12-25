@@ -14,7 +14,7 @@ def makepdfanddisplay(filename):
 def structurizelist(list):
     
     # Sort List by Date
-    #list = sorted(list, key=lambda i: i['StartDatum'])
+    list = sorted(list, key=lambda i: i['StartDatum'])
 
     # Make List of Sparten
     spartenliste = []
@@ -28,12 +28,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
-    spartenliste = []
-    
-    #spartenliste = structurizelist(terminefilename)
-    for i in range(len(spartenlisteold)):
-        spartenliste.append([i, spartenlisteold[i]])
-
+    spartenliste = structurizelist(terminefilename)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -114,8 +109,9 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
                         else:
                             texfile.write("    \\item Ansprechpartner KCW: ")
                         texfile.write(Fahrt['Ansprechpartner'][0] + " \\href{"+ "mailto:"  +Fahrt['Ansprechpartner'][1] + "}{"+ Fahrt['Ansprechpartner'][1] + "}\n")
-                    for item in Fahrt['items']:
-                        texfile.write("    \\item " + item + "\n")
+                    if Fahrt['items']:
+                        for item in Fahrt['items']:
+                            texfile.write("    \\item " + item + "\n")
                     texfile.write("\\end{itemize}\n\n")
             texfile.write("\n")
         texfile.write("\\end{document}")

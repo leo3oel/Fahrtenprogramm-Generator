@@ -23,7 +23,20 @@ class MainWin(tk.Tk):
         'AnsprechpartnerKCW' : None,
         'Fließtext' : None,
         'items' : None # Liste mit Stichpunkten'
-        }
+        },
+        {
+        'Sparte' : "Kanupolo",
+        'Spartennr' : 0,
+        'Fahrtname' : "Test",
+        'Startzeit' : None,
+        'Endzeit' : None,
+        'StartDatum' : datetime.date(month=12,day=15,year=2023),
+        'EndDatum' : None,
+        'Ansprechpartner' : ["Leo", "mail", 'm', True], # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
+        'AnsprechpartnerKCW' : None,
+        'Fließtext' : None,
+        'items' : None # Liste mit Stichpunkten'
+        },
     ]
     __sparten = ["Kanupolo"]
     __ansprechpartner = []
@@ -119,7 +132,7 @@ class MainWin(tk.Tk):
 
     def __export(self):
 
-        texport(self, self.__sparten, 'preamble.tex', 'test.tex')
+        texport(self.__terminedic,self.__sparten, 'preamble.tex', 'test.tex')
         makepdfanddisplay('test.tex')
 
     def __addfahrt(self, number):
