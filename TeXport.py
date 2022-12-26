@@ -35,6 +35,13 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
     with open(preamble) as inpreamble:
         preamble = inpreamble.read()
 
+    # Mark hyperlinks APPEND DICTIONARY
+    for fahrt in terminefilename:
+        fahrt['PrintFließtext'] = markhyperlinks(fahrt['Fließtext'])
+        for item in range(len(fahrt['items'])):
+            fahrt['Printitems'][item] = markhyperlinks(fahrt['items'][item])
+
+
     # Print out TeX
     with open(filenameOut, 'w') as texfile:
 
@@ -94,7 +101,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
                     texfile.write("}\n")
 
                     # Print Fließtext
-                    if(Fahrt['Fließtext']):
+                    if(Fahrt['PrintFließtext']):
                         texfile.write("\\mbox{}\\\\\\mbox{}\\\\"+Fahrt['Fließtext'] + "\\\\")
 
                     # Print items
@@ -110,9 +117,25 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
                         else:
                             texfile.write("    \\item Ansprechpartner KCW: ")
                         texfile.write(Fahrt['Ansprechpartner'][0] + " \\href{"+ "mailto:"  +Fahrt['Ansprechpartner'][1] + "}{"+ Fahrt['Ansprechpartner'][1] + "}\n")
-                    if Fahrt['items']:
-                        for item in Fahrt['items']:
+                    if Fahrt['Printitems']:
+                        for item in Fahrt['Printitems']:
                             texfile.write("    \\item " + item + "\n")
                     texfile.write("\\end{itemize}\n\n")
             texfile.write("\n")
         texfile.write("\\end{document}")
+
+
+def markhyperlinks(string):
+
+    outputstring = ""
+    currentword = ""
+    for char in string:
+        if char == " " or char == "\n" or char == "," or char == ";":
+            if currentword[0:4] =="www.":
+                currentword = "\\href{" + currentword + "}{"+currentword+"}"
+            outputstring += currentword + char
+            currentword = ""
+        else:
+            currentword += char
+    outputstring += currentword
+    return outputstring

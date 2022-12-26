@@ -23,6 +23,8 @@ class MainWin(tk.Tk):
     __sparten = []
     __ansprechpartner = []
 
+    __exportfilename= None
+    __preamble_filename = None
 
     def __init__(self):
         
@@ -169,18 +171,24 @@ class MainWin(tk.Tk):
         self.__tex.trace("w", self.__togglepreamble)
 
         pdf = tk.IntVar()
-        cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument", variable=pdf, onvalue=1,offvalue=0)
-        cb_pdf.grid(column=0,row=3, columnspan=2,padx=5,pady=5)
+        self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument, benötigt LaTeX Installation", variable=pdf, onvalue=1,offvalue=0)
+        self.__cb_pdf.grid(column=0,row=3, columnspan=2,padx=5,pady=5)
+        self.__cb_pdf.grid_remove()
 
         self.__preamble_label = tk.Label(self.__exportwindow, text="Preamble:")
         self.__preamble_label.grid(column=0,row=4,padx=5,pady=5, sticky=tk.W)
         self.__preamble_label.grid_remove()
 
+        keeplogs = tk.IntVar()
+        self.__keeplogs = tk.Checkbutton(self.__exportwindow, text="Log Dateien behalten", variable=keeplogs, onvalue=1,offvalue=0)
+        self.__keeplogs.grid(column=0,row=4, columnspan=2,padx=5,pady=5)
+        self.__keeplogs.grid_remove()
+
         self.__preamble_button = tk.Button(self.__exportwindow, text="Preamble öffnen", command=self.__openpreamble)
-        self.__preamble_button.grid(column=1,row=4,padx=5,pady=5, sticky=tk.W)
+        self.__preamble_button.grid(column=1,row=5,padx=5,pady=5, sticky=tk.W)
         self.__preamble_button.grid_remove()
 
-        export_btn = tk.Button(self.__exportwindow, text="Exportieren", command=lambda: self.__export())
+        export_btn = tk.Button(self.__exportwindow, text="Exportieren", command=lambda: self.__export(self.__tex.get(),pdf.get(), keeplogs.get()))
         export_btn.grid(column=0,row=50, columnspan=2,padx=5,pady=5)
 
         self.__exportwindow.mainloop()
@@ -191,9 +199,13 @@ class MainWin(tk.Tk):
         if self.__tex.get():
             self.__preamble_label.grid()
             self.__preamble_button.grid()
+            self.__cb_pdf.grid()
+            self.__keeplogs.grid()
         else:
             self.__preamble_label.grid_remove()
             self.__preamble_button.grid_remove()
+            self.__cb_pdf.grid_remove()
+            self.__keeplogs.grid_remove()
 
     
     def __openpreamble(self):
@@ -211,14 +223,33 @@ class MainWin(tk.Tk):
         if efile:
             self.__exportfilename = efile.name
             efile.close()
+            os.remove(self.__exportfilename)
 
 
-    def __export(self):
+    def __export(self, tex, pdf, logs):
+
+        if not self.__exportfilename:
+            msgbox.showerror("Fehler", "Bitte Zieldatei auswählen")
+            return 0
 
         texfilename = self.__exportfilename+".tex"
-        texport(self.__terminedic,self.__sparten, self.__preamble_filename, texfilename)
-        makepdfanddisplay(texfilename)
+        if tex:
+            if not self.__preamble_filename:
+                msgbox.showerror("Fehler", "Bitte Preamble auswählen")
+                return 0 
+            else:
+                texport(self.__terminedic,self.__sparten, self.__preamble_filename, texfilename)
+        if pdf:
+            makepdfanddisplay(texfilename)
+        if logs:
+            pass
+        else:
+            os.remove(self.__exportfilename+".toc")
+            os.remove(self.__exportfilename+".out")
+            os.remove(self.__exportfilename+".aux")
+            os.remove(self.__exportfilename+".log")
 
+        self.__exportwindow.destroy()
 
 
     def __addfahrt(self, number):
