@@ -607,7 +607,7 @@ class EditFahrten(Toplevel):
         confirmwindow.title("Bitte bestägtigen")
 
         confirmwindow.columnconfigure(0, weight =1)
-        confirmwindow.columnconfigure(0, weight =1)
+        confirmwindow.columnconfigure(1, weight =1)
 
         text_label = Label(confirmwindow, text=msg)
         text_label.grid(column=0,row=0, columnspan=2,padx=5,pady=5, sticky=W)
