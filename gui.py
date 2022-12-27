@@ -2,6 +2,7 @@ import tkinter.messagebox as msgbox
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import Scrollbar
+from tkinter import scrolledtext
 import datetime
 from TeXport import *
 #from changedictlist import *
@@ -25,6 +26,7 @@ class MainWin(tk.Tk):
 
     __exportfilename= None
     __preamble_filename = None
+    __vorbemerkung = ""
 
     def __init__(self):
         
@@ -80,24 +82,23 @@ class MainWin(tk.Tk):
 
         hline(self.__frame, 1,5)
 
-
         if not fahrtennr:
             for increment in range(1,len(self.__terminedic)+1):
                 
                 startdatum_label.append(tk.Label(self.__frame, text=daymonthyear(self.__terminedic[increment-1]['StartDatum'])))
-                startdatum_label[increment].grid(column=0,row=increment+1,padx=5,pady=5, sticky=tk.W)
+                startdatum_label[increment].grid(column=0,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
                 enddatum_label.append(tk.Label(self.__frame, text=daymonthyear(self.__terminedic[increment-1]['EndDatum'])))
-                enddatum_label[increment].grid(column=1,row=increment+1,padx=5,pady=5, sticky=tk.W)
+                enddatum_label[increment].grid(column=1,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
                 sparte_label.append(tk.Label(self.__frame, text=self.__terminedic[increment-1]['Sparte']))
-                sparte_label[increment].grid(column=2,row=increment+1,padx=5,pady=5, sticky=tk.W)
+                sparte_label[increment].grid(column=2,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
                 name_label.append(tk.Label(self.__frame, text=self.__terminedic[increment-1]['Fahrtname']))
-                name_label[increment].grid(column=3,row=increment+1,padx=5,pady=5, sticky=tk.W)
+                name_label[increment].grid(column=3,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
                 edit_buttons.append(tk.Button(self.__frame,text="Bearbeiten",command=lambda c=increment: self.__editfahrt(c-1)))
-                edit_buttons[increment-1].grid(column=4, row=increment+1,padx=5,pady=5,sticky=tk.E)
+                edit_buttons[increment-1].grid(column=4, row=increment+2,padx=5,pady=5,sticky=tk.E)
 
         self.__frame.update()
 
@@ -108,6 +109,7 @@ class MainWin(tk.Tk):
         
         mn.add_command(label = "Öffnen", command=self.__openfile)
         mn.add_command(label = "Speichern", command=self.__savefile)
+        mn.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
         mn.add_command(label="Exportieren", command=self.__exportwin)
 
 
@@ -127,6 +129,7 @@ class MainWin(tk.Tk):
                 self.__terminedic = decoded[0]
                 self.__ansprechpartner = decoded[1]
                 self.__sparten = decoded[2]
+                self.__vorbemerkung = decoded[3]
 
                 self.printfahrten()
 
@@ -148,7 +151,7 @@ class MainWin(tk.Tk):
 
     def __makejson(self):
         
-        return json.dumps([self.__terminedic, self.__ansprechpartner, self.__sparten], cls=DateTimeEncoder, indent=4, ensure_ascii=False)
+        return json.dumps([self.__terminedic, self.__ansprechpartner, self.__sparten, self.__vorbemerkung], cls=DateTimeEncoder, indent=4, ensure_ascii=False)
             
 
     def __exportwin(self):
@@ -194,6 +197,38 @@ class MainWin(tk.Tk):
         self.__exportwindow.mainloop()
 
 
+    def __vorbemerkungbearbeiten(self):
+
+        vorbemerkungswindow = tk.Toplevel(self)
+        vorbemerkungswindow.title("Vorbemerkung bearbeiten")
+
+        vorbemerkungswindow.columnconfigure(0, weight=1)
+
+        text_label = tk.Label(vorbemerkungswindow, text="Bitte Text eingeben, LaTeX Commands werden unterstützt:")
+        text_label.grid(column=0,row=0,padx=5,pady=5, sticky=tk.W)
+
+        text_entry = scrolledtext.ScrolledText(vorbemerkungswindow, wrap=tk.WORD, width=200, height=40)
+        text_entry.grid(column=0,row=1,padx=5,pady=5, sticky=tk.W)
+        
+        text_entry.insert(tk.END, self.__vorbemerkung)
+
+        save_bt = tk.Button(vorbemerkungswindow, text="Speichern", command=lambda: self.__savevorbemerkung(text_entry.get("1.0", tk.END), vorbemerkungswindow))
+        save_bt.grid(column=0,row=2)
+
+        vorbemerkungswindow.mainloop()
+
+    
+    def __savevorbemerkung(self, text, topwin):
+        
+        # delete linebreaks
+        if text:
+            char = text[-1]
+            while char == "\n":
+                text = text[:-1]
+                char = text[-1]
+        self.__vorbemerkung = text
+        topwin.destroy()
+
     def __togglepreamble(self, *args):
 
         if self.__tex.get():
@@ -238,7 +273,7 @@ class MainWin(tk.Tk):
                 msgbox.showerror("Fehler", "Bitte Preamble auswählen")
                 return 0 
             else:
-                texport(self.__terminedic,self.__sparten, self.__preamble_filename, texfilename)
+                texport(self.__terminedic,self.__sparten, self.__preamble_filename, texfilename, self.__ansprechpartner, self.__vorbemerkung)
         if pdf:
             makepdfanddisplay(texfilename)
         if logs:
