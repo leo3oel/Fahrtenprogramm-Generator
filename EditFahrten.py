@@ -49,7 +49,7 @@ class EditFahrten(Toplevel):
         if self.__new:
             self.__desc_text = ""
         else:
-            self.__desc_text = fahrtenliste[number]['Fließtext']
+            self.__desc_text = fahrtenliste[number]['Fliesstext']
 
         #self.minsize(500, 300)
         self.makewindow()
@@ -118,12 +118,12 @@ class EditFahrten(Toplevel):
         self.__ansprechpartner_kcw_desc.grid(row=7,column=0,padx=5,pady=5,sticky=W)
         self.__ansprechpartner_kcw_desc.grid_remove()
 
-        # Fließtext
-        fließtext_desc = Label(self, text="Fließtext:")
-        fließtext_desc.grid(row=8,column=0,padx=5,pady=5,sticky=W)
+        # Fliesstext
+        Fliesstext_desc = Label(self, text="Fliesstext:")
+        Fliesstext_desc.grid(row=8,column=0,padx=5,pady=5,sticky=W)
 
-        fließtext_but = Button(self, text="bearbeiten", command=self.__fliesstextentry)
-        fließtext_but.grid(row=8,column=2,padx=5,pady=5,sticky=W)
+        Fliesstext_but = Button(self, text="bearbeiten", command=self.__fliesstextentry)
+        Fliesstext_but.grid(row=8,column=2,padx=5,pady=5,sticky=W)
 
         # Items
         item_desc = Label(self, text="Stichpunkte:")
@@ -417,7 +417,7 @@ class EditFahrten(Toplevel):
 
     def __savefliesstext(self, textentry):
         """
-        Save Function for Fließtext
+        Save Function for Fliesstext
         """
 
         self.__desc_text = textentry.get("1.0", tk.END)
@@ -547,7 +547,7 @@ class EditFahrten(Toplevel):
                 inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i][0],
                 inAnsprechpartnerKCW=self.__ansprechpartner[ansprechpartner_kcw_i][0],
                 inItems = stichpunkte_save,
-                inFließtext=fliesstext,
+                inFliesstext=fliesstext,
                 inStartzeit=startzeit,
                 inEndzeit=endzeit
             )
@@ -562,7 +562,7 @@ class EditFahrten(Toplevel):
                 inEndDatum = enddatum,
                 inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i][0],
                 inItems = stichpunkte_save,
-                inFließtext=fliesstext,
+                inFliesstext=fliesstext,
                 inStartzeit=startzeit,
                 inEndzeit=endzeit,
             )
@@ -577,7 +577,7 @@ class EditFahrten(Toplevel):
             fahrt['StartDatum'] = startdatum
             fahrt['EndDatum'] = enddatum
             fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i][0]
-            fahrt['Fließtext'] = fliesstext
+            fahrt['Fliesstext'] = fliesstext
             fahrt['items'] = stichpunkte_save
             self.__topwin.printfahrten()
             self.destroy()
@@ -591,7 +591,7 @@ class EditFahrten(Toplevel):
             fahrt['EndDatum'] = enddatum
             fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i][0]
             fahrt['AnsprechpartnerKCW'] = self.__ansprechpartner[ansprechpartner_kcw_i][0]
-            fahrt['Fließtext'] = fliesstext
+            fahrt['Fliesstext'] = fliesstext
             fahrt['items'] = stichpunkte_save
             self.__topwin.printfahrten()
             self.destroy()
@@ -642,7 +642,7 @@ class Mainwin(tk.Tk):
         self.wm_title("Test")
         
 
-def appenddictionarylist(liste, inSparte, inStartDatum, inAnsprechpartner, inItems, inFahrtname, inFließtext=None,inAnsprechpartnerKCW=None, inEndDatum=None, inStartzeit=None, inEndzeit=None):
+def appenddictionarylist(liste, inSparte, inStartDatum, inAnsprechpartner, inItems, inFahrtname, inFliesstext=None,inAnsprechpartnerKCW=None, inEndDatum=None, inStartzeit=None, inEndzeit=None):
     liste.append({
         'Sparte' : inSparte,
         'Fahrtname' : inFahrtname,
@@ -652,6 +652,6 @@ def appenddictionarylist(liste, inSparte, inStartDatum, inAnsprechpartner, inIte
         'EndDatum' : inEndDatum,
         'Ansprechpartner' : inAnsprechpartner, # 2D-Liste mit Ansprechpartner, Email. Wenn Länge>1: Ansprechpartner, Ansprechpartner KCW, Ansprechpartner n
         'AnsprechpartnerKCW' : inAnsprechpartnerKCW,
-        'Fließtext' : inFließtext,
+        'Fliesstext' : inFliesstext,
         'items' : inItems # Liste mit Stichpunkten
     })

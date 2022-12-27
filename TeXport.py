@@ -49,7 +49,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
         list = []
         for item in range(len(fahrt['items'])):
             list.append(markhyperlinks(fahrt['items'][item]))
-        dict1 = {'PrintFließtext': markhyperlinks(fahrt['Fließtext']), 'Printitems': list}
+        dict1 = {'PrintFliesstext': markhyperlinks(fahrt['Fliesstext']), 'Printitems': list}
         fahrt.update(dict1)
 
     clearfliesstext(terminefilename)
@@ -123,9 +123,9 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
                             texfile.write("ab " + Fahrt['Startzeit'])
                     texfile.write("}\n")
 
-                    # Print Fließtext
-                    if(Fahrt['PrintFließtext']):
-                        texfile.write("\\mbox{}\\\\\\mbox{}"+Fahrt['Fließtext'])
+                    # Print Fliesstext
+                    if(Fahrt['PrintFliesstext']):
+                        texfile.write("\\mbox{}\\\\\\mbox{}"+Fahrt['Fliesstext'])
 
                     # Print items
                     texfile.write("\\begin{itemize}\n")
@@ -166,7 +166,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
 
     for fahrt in terminefilename:
         fahrt.pop("Printitems")
-        fahrt.pop('PrintFließtext')
+        fahrt.pop('PrintFliesstext')
 
 
 def markhyperlinks(string):
@@ -192,10 +192,10 @@ def clearfliesstext(dict):
     """
 
     for dic in dict:
-        string = dic['Fließtext']
+        string = dic['Fliesstext']
         if string:
             char = string[-1]
             while char == "\n":
                 string = string[:-1]
                 char = string[-1]
-            dic['Fließtext'] = string
+            dic['Fliesstext'] = string
