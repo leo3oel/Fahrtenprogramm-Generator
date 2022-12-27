@@ -24,12 +24,18 @@ def structurizelist(list):
     return spartenliste """
 
 
-def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungenvorneweg=None):
+def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpartnerliste, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
-    spartenliste = spartenlisteold
+    spartenliste = []
     structurizelist(terminefilename)
+
+    # check for needed sparten
+    for sparte in spartenlisteold:
+        for fahrt in terminefilename:
+            if sparte == fahrt['Sparte']:
+                spartenliste.append(sparte)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -68,6 +74,8 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
         )
 
         if bemerkungenvorneweg:
+            bemerkungenvorneweg = markhyperlinks(bemerkungenvorneweg)
+            texfile.write("\\section*{Bemerkungen}")
             texfile.write(bemerkungenvorneweg)
 
         for sparte in spartenliste:
@@ -109,17 +117,34 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, bemerkungen
 
                     # Print items
                     texfile.write("\\begin{itemize}\n")
-                    if Fahrt['Ansprechpartner'][2] == 'w':
-                        texfile.write("    \\item Ansprechpartnerin: ")
-                    else:
-                        texfile.write("    \\item Ansprechpartner: ")
-                    texfile.write(Fahrt['Ansprechpartner'][0] + " \\href{"+ "mailto:"  +Fahrt['Ansprechpartner'][1] + "}{"+ Fahrt['Ansprechpartner'][1] + "}\n")
-                    if(Fahrt['AnsprechpartnerKCW']):
-                        if Fahrt['Ansprechpartner'][2] == 'w':
-                            texfile.write("    \\item Ansprechpartnerin KCW: ")
+                    ansprechpartner = []
+                    ansprechpartnerkcw = []
+                    for item in ansprechpartnerliste:
+                        if Fahrt['Ansprechpartner'] in item:
+                            ansprechpartner = item
+                    if Fahrt['AnsprechpartnerKCW']:
+                        for item in ansprechpartnerliste:
+                            if Fahrt['AnsprechpartnerKCW'] in item:
+                                ansprechpartnerkcw = item
+
+                    if ansprechpartner:
+                        if ansprechpartner[2] == 'w':
+                            texfile.write("    \\item Ansprechpartnerin: ")
                         else:
-                            texfile.write("    \\item Ansprechpartner KCW: ")
-                        texfile.write(Fahrt['Ansprechpartner'][0] + " \\href{"+ "mailto:"  +Fahrt['Ansprechpartner'][1] + "}{"+ Fahrt['Ansprechpartner'][1] + "}\n")
+                            texfile.write("    \\item Ansprechpartner: ")
+                        texfile.write(ansprechpartner[0] + " \\href{"+ "mailto:"  +ansprechpartner[1] + "}{"+ ansprechpartner[1] + "}\n")
+                        if(Fahrt['AnsprechpartnerKCW']):
+                            if ansprechpartnerkcw:
+                                if ansprechpartnerkcw[2] == 'w':
+                                    texfile.write("    \\item Ansprechpartnerin KCW: ")
+                                else:
+                                    texfile.write("    \\item Ansprechpartner KCW: ")
+                                texfile.write(ansprechpartnerkcw[0] + " \\href{"+ "mailto:"  +ansprechpartnerkcw[1] + "}{"+ ansprechpartnerkcw[1] + "}\n")
+                            else:
+                                texfile.write("\\item {\\color{red} Ansprechpartner " + Fahrt['AnsprechpartnerKCW'] + " konnte nicht gefunden werden. Bitte Ansprechpartner liste überprüfen}")
+                    else:
+                        texfile.write("\\item {\\color{red} Ansprechpartner " + Fahrt['Ansprechpartner'] + " konnte nicht gefunden werden. Bitte Ansprechpartner liste überprüfen}")
+
                     if Fahrt['Printitems']:
                         for item in Fahrt['Printitems']:
                             texfile.write("    \\item " + item + "\n")
