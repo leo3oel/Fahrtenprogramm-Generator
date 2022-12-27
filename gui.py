@@ -138,12 +138,13 @@ class MainWin(tk.Tk):
         
         if not self.__file:
             self.__file = filedialog.asksaveasfile(mode="w", initialfile=".fahrten")
-            self.__filename = self.__file.name
-            if self.__filename[-7:] != "fahrten":
-                msgbox.showerror("Ungültiger Dateiname", "Bitte Dateiname überprüfen")
-                os.remove(self.__filename)
-            self.__file.write(self.__makejson())
-            self.__file.close()
+            if self.__file:
+                self.__filename = self.__file.name
+                if self.__filename[-7:] != "fahrten":
+                    msgbox.showerror("Ungültiger Dateiname", "Bitte Dateiname überprüfen")
+                    os.remove(self.__filename)
+                self.__file.write(self.__makejson())
+                self.__file.close()
         else:
             with open(self.__filename, "w") as self.__file:
                 self.__file.write(self.__makejson())

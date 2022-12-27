@@ -301,12 +301,13 @@ class EditFahrten(Toplevel):
         # Ansprechpartner KCW
         ansprechpartner_kcw = StringVar()
         if self.__fahrten[self.__number]["AnsprechpartnerKCW"]:
+            self.__ansprechpartner_kcw_desc.grid()
             currentansprechkcw = []
             for item in self.__ansprechpartner:
                 if self.__fahrten[self.__number]["AnsprechpartnerKCW"] in item:
                     currentansprechkcw = item
             if currentansprechkcw:
-                ansprechpartner_kcw.set(display_an[display_an.index(self.__fahrten[self.__number]["AnsprechpartnerKCW"][0])])
+                ansprechpartner_kcw.set(currentansprechkcw[0])
             else:
                 printstring = "Ansprechpartner " + self.__fahrten[self.__number]["AnsprechpartnerKCW"] + " konnte nicht in Ansprechparterliste gefunden werden"
                 msgbox.showerror("Ansprechpartner nicht gefunden",printstring, parent=self)
@@ -314,13 +315,6 @@ class EditFahrten(Toplevel):
             ansprechpartner_kcw.set(display_an[0])
         self.__ansprech_kcw_selec = OptionMenu(self, ansprechpartner_kcw, *display_an)
         self.__ansprech_kcw_selec.grid(row=7, column=1)
-        if self.__fahrten[self.__number]["AnsprechpartnerKCW"]:
-            ansprechpartner_kcw.set(display_an[display_an.index(self.__fahrten[self.__number]["AnsprechpartnerKCW"][0])])
-            self.__ansprechpartner_kcw_desc.grid()
-            
-        else:
-            ansprechpartner_kcw.set(display_an[0])
-            self.__ansprech_kcw_selec.grid_remove()
 
         # Items
         itemslist = self.__fahrten[self.__number]["items"]
@@ -503,14 +497,14 @@ class EditFahrten(Toplevel):
         ansprechpartner_namen = [name[0] for name in self.__ansprechpartner]
 
         if ansprechpartner not in ansprechpartner_namen:
-            msgbox.showwarning("Eingabe falsch", "Bitte Ansprechpartner auswählen")
+            msgbox.showwarning("Eingabe falsch", "Bitte Ansprechpartner auswählen", parent=self)
             return 0
         
         ansprechpartner_i = ansprechpartner_namen.index(ansprechpartner)
         
         if not self.__ansprechpartner[ansprechpartner_i][3]:
             if ansprechpartnerkcw not in ansprechpartner_namen:
-                msgbox.showwarning("Eingabe falsch", "Bitte KCW Ansprechpartner auswählen")
+                msgbox.showwarning("Eingabe falsch", "Bitte KCW Ansprechpartner auswählen", parent=self)
                 return 0
             ansprechpartner_kcw_i = ansprechpartner_namen.index(ansprechpartnerkcw)
             ansprechpartner_kcw_needed = True
@@ -521,7 +515,7 @@ class EditFahrten(Toplevel):
             return 0
 
         if self.__EndDatum.get() and startdatum>enddatum:
-            msgbox.showwarning("Eingabe falsch", "Enddatum kann nicht vor Startdatum liegen")
+            msgbox.showwarning("Eingabe falsch", "Enddatum kann nicht vor Startdatum liegen", parent=self)
             return 0
 
         if (not fahrtname):
@@ -529,11 +523,11 @@ class EditFahrten(Toplevel):
             return 0
         
         if not(len(startzeit) == 5 or len(startzeit) ==0):
-            msgbox.showwarning("Eingabe falsch", "Startzeit Format nicht in Ordnung")
+            msgbox.showwarning("Eingabe falsch", "Startzeit Format nicht in Ordnung", parent=self)
             return 0
 
         if not(len(endzeit) == 5 or len(endzeit) ==0):
-            msgbox.showwarning("Eingabe falsch", "Endzeit Format nicht in Ordnung")
+            msgbox.showwarning("Eingabe falsch", "Endzeit Format nicht in Ordnung", parent=self)
             return 0
 
         spartennr = self.__currentsparten.index(spartenname)
