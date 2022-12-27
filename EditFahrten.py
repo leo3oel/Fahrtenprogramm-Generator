@@ -284,7 +284,15 @@ class EditFahrten(Toplevel):
         for ansprechpartner in range(len(self.__ansprechpartner)):
             display_an.append(self.__ansprechpartner[ansprechpartner][0])
         self.__ansprechpartner_sel = StringVar()
-        self.__ansprechpartner_sel.set(display_an[display_an.index(self.__fahrten[self.__number]["Ansprechpartner"][0])])
+        currentansprech = []
+        for item in self.__ansprechpartner:
+            if self.__fahrten[self.__number]["Ansprechpartner"] in item:
+                currentansprech = item
+        if currentansprech:
+            self.__ansprechpartner_sel.set(currentansprech[0])
+        else:
+            printstring = "Ansprechpartner " + self.__fahrten[self.__number]["Ansprechpartner"] + " konnte nicht in Ansprechparterliste gefunden werden"
+            msgbox.showerror("Ansprechpartner nicht gefunden", printstring, parent=self)
         ansprech_selec = OptionMenu(self, self.__ansprechpartner_sel, *display_an)
         ansprech_selec.grid(row=6, column=1)
 
@@ -293,7 +301,15 @@ class EditFahrten(Toplevel):
         # Ansprechpartner KCW
         ansprechpartner_kcw = StringVar()
         if self.__fahrten[self.__number]["AnsprechpartnerKCW"]:
-            ansprechpartner_kcw.set(display_an[display_an.index(self.__fahrten[self.__number]["AnsprechpartnerKCW"][0])])
+            currentansprechkcw = []
+            for item in self.__ansprechpartner:
+                if self.__fahrten[self.__number]["AnsprechpartnerKCW"] in item:
+                    currentansprechkcw = item
+            if currentansprechkcw:
+                ansprechpartner_kcw.set(display_an[display_an.index(self.__fahrten[self.__number]["AnsprechpartnerKCW"][0])])
+            else:
+                printstring = "Ansprechpartner " + self.__fahrten[self.__number]["AnsprechpartnerKCW"] + " konnte nicht in Ansprechparterliste gefunden werden"
+                msgbox.showerror("Ansprechpartner nicht gefunden",printstring, parent=self)
         else:
             ansprechpartner_kcw.set(display_an[0])
         self.__ansprech_kcw_selec = OptionMenu(self, ansprechpartner_kcw, *display_an)
@@ -527,15 +543,15 @@ class EditFahrten(Toplevel):
             if stichpunkt.get()!="":
                 stichpunkte_save.append(stichpunkt.get())
 
-        if (not number) and ansprechpartner_kcw_needed:
+        if (number==None) and ansprechpartner_kcw_needed:
             appenddictionarylist(
                 liste = self.__fahrten,
                 inSparte = spartenname,
                 inFahrtname = fahrtname,
                 inStartDatum = startdatum,
                 inEndDatum = enddatum,
-                inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i],
-                inAnsprechpartnerKCW=self.__ansprechpartner[ansprechpartner_kcw_i],
+                inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i][0],
+                inAnsprechpartnerKCW=self.__ansprechpartner[ansprechpartner_kcw_i][0],
                 inItems = stichpunkte_save,
                 inFließtext=fliesstext,
                 inStartzeit=startzeit,
@@ -543,14 +559,14 @@ class EditFahrten(Toplevel):
             )
             self.__topwin.printfahrten()
             self.destroy()
-        elif not number:
+        elif number == None:
             appenddictionarylist(
                 liste = self.__fahrten,
                 inSparte = spartenname,
                 inFahrtname = fahrtname,
                 inStartDatum = startdatum,
                 inEndDatum = enddatum,
-                inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i],
+                inAnsprechpartner = self.__ansprechpartner[ansprechpartner_i][0],
                 inItems = stichpunkte_save,
                 inFließtext=fliesstext,
                 inStartzeit=startzeit,
@@ -558,7 +574,7 @@ class EditFahrten(Toplevel):
             )
             self.__topwin.printfahrten()
             self.destroy()
-        elif number and not ansprechpartner_kcw_needed:
+        elif number>= 0 and not ansprechpartner_kcw_needed:
             fahrt = self.__fahrten[number]
             fahrt['Sparte'] = spartenname
             fahrt['Fahrtname'] = fahrtname
@@ -566,7 +582,7 @@ class EditFahrten(Toplevel):
             fahrt['Endzeit'] = endzeit
             fahrt['StartDatum'] = startdatum
             fahrt['EndDatum'] = enddatum
-            fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i]
+            fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i][0]
             fahrt['Fließtext'] = fliesstext
             fahrt['items'] = stichpunkte_save
             self.__topwin.printfahrten()
@@ -579,8 +595,8 @@ class EditFahrten(Toplevel):
             fahrt['Endzeit'] = endzeit
             fahrt['StartDatum'] = startdatum
             fahrt['EndDatum'] = enddatum
-            fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i]
-            fahrt['AnsprechpartnerKCW'] = self.__ansprechpartner[ansprechpartner_kcw_i]
+            fahrt['Ansprechpartner'] = self.__ansprechpartner[ansprechpartner_i][0]
+            fahrt['AnsprechpartnerKCW'] = self.__ansprechpartner[ansprechpartner_kcw_i][0]
             fahrt['Fließtext'] = fliesstext
             fahrt['items'] = stichpunkte_save
             self.__topwin.printfahrten()
