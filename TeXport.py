@@ -34,8 +34,11 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
     # check for needed sparten
     for sparte in spartenlisteold:
         for fahrt in terminefilename:
-            if sparte == fahrt['Sparte']:
-                spartenliste.append(sparte)
+            if (sparte == fahrt['Sparte']):
+                if fahrt['Sparte'] in spartenliste:
+                    pass
+                else:
+                    spartenliste.append(sparte)
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -78,16 +81,25 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
             texfile.write("\\section*{Bemerkungen}")
             texfile.write(bemerkungenvorneweg)
 
+
         for sparte in spartenliste:
             texfile.write("\\chapter*{")
             texfile.write(sparte + "}\n")
             texfile.write("\\thispagestyle{" + sparte + "}\n" + "\\addcontentsline{toc}{chapter}{\\protect\\numberline{}" + sparte + "}\n")
             texfile.write("\\pagestyle{" + sparte + "}\n")
 
+            monat = -1
+            monatsnamen = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+
             for Fahrt in terminefilename:
 
                 if Fahrt['Sparte'] == sparte:
                     
+                    if (Fahrt['StartDatum'].month-1) != monat:
+                        monat = (Fahrt['StartDatum'].month-1)
+                        if monat < len(monatsnamen):
+                            texfile.write("\\section*{" + monatsnamen[monat] + "}")
+
                     # Print Paragraphname
                     texfile.write("\\paragraph{"+Fahrt['Fahrtname']+"}")
 
@@ -169,6 +181,8 @@ def markhyperlinks(string):
             currentword = ""
         else:
             currentword += char
+    if currentword[0:4] =="www.":
+        currentword = "\\url{" + currentword + "}"
     outputstring += currentword
     return outputstring
 
