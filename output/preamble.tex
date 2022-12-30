@@ -1,0 +1,48 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage{fontspec}
+\setmainfont{CMU Serif}
+\usepackage{marginnote}
+\usepackage[german]{babel}
+\usepackage{xurl}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+%Section auf größe von subsection setzen
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+%Grafik
+\usepackage{float}
+%\usepackage{pgf-pie}
+\usepackage{pdfpages}
+%\usepackage{pgf, tikz} %Tikz GRAPHICS
+
+%Seitenlayout, Margins verkleinern
+\usepackage[a4paper, headheight=1.75cm, top=3.2cm,bottom=30mm, left=4.5cm, right=1.5cm, marginparwidth=4cm, marginparsep=.4cm]{geometry} 
+\usepackage{setspace}%Zeilenabstand verändern zB \onehalfspacing(Präambel)
+
+\usepackage{amsmath}
+\usepackage{csquotes}
+\usepackage{graphicx} %Für Bilder
+\usepackage{subcaption} %Für subfigure
+\usepackage{siunitx}
+%Bruchstrich
+\sisetup{per-mode=fraction, output-decimal-marker = {,}, exponent-product=\cdot}
+%Hier beliebige Einheiten hinzufügen
+\DeclareSIUnit\year{Jahre}
+
+%Kopf-Fußzeile
+\usepackage{fancyhdr}
+%\fancyhf{}
+\pagestyle{fancy}
+\fancyhead[L]{\Large{\textsc{Jahresprogramm}}}
+\fancyhead[R]{\includegraphics[width=1.75cm]{logo.png}}
+\renewcommand{\headrulewidth}{0.5pt}
+\setlength{\headheight}{56.4pt}
+\cfoot{\thepage}
+
+%Paragraph Settings
+\setlength{\parindent}{0cm}
+
+%Titel
+\title{Vorläufiges Fahrtenprogramm}
+\date{}
+%\author{Leonhard Schraut}
+%Dokument
