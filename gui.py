@@ -123,8 +123,9 @@ class MainWin(tk.Tk):
             self.__file = filedialog.askopenfile()
             if self.__file:
                 self.__filename = self.__file.name
-                decoded = json.load(self.__file, object_hook=DecodeDateTime)
                 self.__file.close()
+                with open(self.__filename, 'r', encoding='utf8') as file:
+                    decoded = json.load(file, object_hook=DecodeDateTime)
 
                 self.__terminedic = decoded[0]
                 self.__ansprechpartner = decoded[1]
