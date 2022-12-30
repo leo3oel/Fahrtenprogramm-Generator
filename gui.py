@@ -9,6 +9,7 @@ from TeXport import *
 from basicgui import hline
 from EditFahrten import EditFahrten
 import os
+from os.path import exists
 from tkinter import filedialog
 import json
 from json import JSONEncoder
@@ -280,11 +281,15 @@ class MainWin(tk.Tk):
             makepdfanddisplay(texfilename)
         if logs:
             pass
-        else:
-            os.remove(self.__exportfilename+".toc")
-            os.remove(self.__exportfilename+".out")
-            os.remove(self.__exportfilename+".aux")
-            os.remove(self.__exportfilename+".log")
+        elif pdf:
+            if exists(self.__exportfilename+".toc"):
+                os.remove(self.__exportfilename+".toc")
+            if exists(self.__exportfilename+".out"):
+                os.remove(self.__exportfilename+".out")
+            if exists(self.__exportfilename+".aux"):
+                os.remove(self.__exportfilename+".aux")
+            if exists(self.__exportfilename+".log"):
+                os.remove(self.__exportfilename+".log")
 
         self.__exportwindow.destroy()
 
