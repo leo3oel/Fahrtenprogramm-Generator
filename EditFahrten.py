@@ -157,12 +157,12 @@ class EditFahrten(Toplevel):
         sparten_selec.grid(row=1, column=1)
 
         # Startdatum
-        startdat_entry = DateEntry(self, selectmode='day', textvariable=self.__StartDatum)
+        startdat_entry = DateEntry(self,locale='de_DE', selectmode='day', textvariable=self.__StartDatum)
         startdat_entry.grid(row=2,column=1)
 
         # Enddatum
         EndDatum = StringVar()
-        self.__enddat_entry = DateEntry(self, selectmode='day', textvariable=EndDatum)
+        self.__enddat_entry = DateEntry(self,locale='de_DE', selectmode='day', textvariable=EndDatum)
         self.__enddat_entry.grid(row=3,column=1)
         self.__enddat_entry.grid_remove()
 
@@ -244,7 +244,7 @@ class EditFahrten(Toplevel):
         start_day = startdat.day
 
 
-        startdat_entry = DateEntry(self, selectmode='day', textvariable=self.__StartDatum, year=start_year, day=start_day, month=start_month)
+        startdat_entry = DateEntry(self,locale='de_DE', selectmode='day', textvariable=self.__StartDatum, year=start_year, day=start_day, month=start_month)
         startdat_entry.grid(row=2,column=1)
 
         # Enddatum
@@ -256,11 +256,11 @@ class EditFahrten(Toplevel):
             end_month = enddat.month
             end_day = enddat.day
             EndDatum = StringVar()
-            self.__enddat_entry = DateEntry(self, selectmode='day', textvariable=EndDatum, year=end_year, month=end_month,day=end_day)
+            self.__enddat_entry = DateEntry(self,locale='de_DE', selectmode='day', textvariable=EndDatum, year=end_year, month=end_month,day=end_day)
             self.__enddat_entry.grid(row=3,column=1)
         else:
             EndDatum = StringVar()
-            self.__enddat_entry = DateEntry(self, selectmode='day', textvariable=EndDatum)
+            self.__enddat_entry = DateEntry(self,locale='de_DE', selectmode='day', textvariable=EndDatum)
             self.__enddat_entry.grid(row=3,column=1)
             self.__enddat_entry.grid(row=3,column=1)
             self.__enddat_entry.grid_remove()
