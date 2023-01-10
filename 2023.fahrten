@@ -44,6 +44,83 @@
                 "Meldeschluss: 21.04.2023 (sehr schnell ausgebucht)",
                 "Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/642/Wildwasser-Lehrgang-1/"
             ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Pfingst Fahrt",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-05-25",
+            "EndDatum": "2023-05-29",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: noch unbekannt"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Durance/Seealpen",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-06-08",
+            "EndDatum": "2023-06-18",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Schwierigkeit: WW II bis WW IV",
+                "Bis 13.06 Durance, anschließend weiterfahrt z den Seealpen"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Haiming",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-29",
+            "EndDatum": "2023-10-03",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Schwierigkeit: WW II bis WW IV",
+                "Ort: Haiming",
+                "Gepaddelt werden: Ötz, Inn und Sanna"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "BKV Lehrgang Augsburg",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-07-14",
+            "EndDatum": "2023-07-16",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Sebastian",
+            "Fliesstext": "",
+            "items": [
+                "Technik-Lehrgang am Augsburger Eiskanal",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/643/Wildwasser-Lehrgang-2/"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "BKV Lehrgang Lechtal",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-16",
+            "EndDatum": "2023-09-17",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Sebastian",
+            "Fliesstext": "",
+            "items": [
+                "Schulung für Erwachsene sowie Familien (incl. Kinder)",
+                "Schwierigkeit: WW I bis WW III",
+                "Ort: Vorderhornbach",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/644/Wildwasser-Lehrgang-3-Schulung-fuer-Erwachsene-sowie-Familien-incl-Kinder/"
+            ]
         }
     ],
     [
