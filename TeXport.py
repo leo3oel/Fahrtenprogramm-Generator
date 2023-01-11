@@ -232,6 +232,13 @@ class CSVexport():
         for item in self.termineliste[number]['items']:
             description += item + "\n"
 
+    def getansprechpartnerasstring(self, number):
+        # Get Ansprechpartner index
+        # -> Gender correctly
+        # -> print name + mail
+        # -> same for non KCW Ansprechpartner
+        pass
+
     def getdate(self, type,number):
         date = self.termineliste[number][f'{type}Datum']
         zeit = self.termineliste[number][f'{type}zeit']
