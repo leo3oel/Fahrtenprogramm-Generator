@@ -2,7 +2,8 @@ import datetime
 import subprocess
 from DateTime import daymonthyear
 from DateTime import daymonth
-
+from icalendar import Calendar, Event, vCalAddress, vText
+import pytz
 
 
 def makepdfanddisplay(filename):
@@ -199,3 +200,43 @@ def clearfliesstext(dict):
                 string = string[:-1]
                 char = string[-1]
             dic['Fliesstext'] = string
+
+class CSVexport():
+
+    def __init__(self, terminefilename, spartenlisteold, filenameOut, ansprechpartnerliste):
+        termineliste = terminefilename
+        spartenliste = spartenlisteold
+        filename = filenameOut
+        ansprechpartner = ansprechpartnerliste
+        csvfile = Calendar()
+        csvfile.add('prodid', '-//Paddel Kalender//')
+        csvfile.add('version', '2.0')
+
+    def export(self):
+        if not self.termineliste:
+            return 0
+        structurizelist(self.termineliste)
+        for fahrtindex in range(len(self.termineliste)):
+            self.makecsvdate(fahrtindex)
+
+    def makecsvdate(self, number):
+        event = Event()
+        event.add('name', self.termineliste[number]['Fahrtname'])
+        event.add('description', self.getdescription(number))
+        event.add('dtstart', self.getdate("Start",number))
+        event.add('dtend', self.getdate("End",number))
+        self.csvfile.add_component(event)
+
+    def getdescription(self, number):
+        description = ''
+        for item in self.termineliste[number]['items']:
+            description += item + "\n"
+
+    def getdate(self, type,number):
+        date = self.termineliste[number][f'{type}Datum']
+        zeit = self.termineliste[number][f'{type}zeit']
+
+        if zeit:
+            datetime(date.year, date.month, date.day, zeit[:2], zeit[3:], 0, tzinfo=pytz.utc)
+        else:
+            datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
