@@ -204,13 +204,13 @@ def clearfliesstext(dict):
 class CSVexport():
 
     def __init__(self, terminefilename, spartenlisteold, filenameOut, ansprechpartnerliste):
-        termineliste = terminefilename
-        spartenliste = spartenlisteold
-        filename = filenameOut
-        ansprechpartner = ansprechpartnerliste
-        csvfile = Calendar()
-        csvfile.add('prodid', '-//Paddel Kalender//')
-        csvfile.add('version', '2.0')
+        self.termineliste = terminefilename
+        self.spartenliste = spartenlisteold
+        self.filename = filenameOut
+        self.ansprechpartner = ansprechpartnerliste
+        self.csvfile = Calendar()
+        self.csvfile.add('prodid', '-//Paddel Kalender//')
+        self.csvfile.add('version', '2.0')
 
     def export(self):
         if not self.termineliste:
