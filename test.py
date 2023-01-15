@@ -2,6 +2,7 @@ from EditFahrten import appenddictionarylist
 import datetime
 import tkinter as tk
 from tkinter import ttk
+from TeXport import ICSexport
 
 class Mainwin(tk.Tk):
     
@@ -29,7 +30,6 @@ def testsettings():
         liste = terminedic,
         inSparte = 'Allgemein',
         inFahrtname = "Arbeitsdienst",
-        inSpartennr = 0,
         inStartDatum = datetime.date(2023,1,1),
         inAnsprechpartner = ansprechpartner[0],
         inStartzeit= datetime.time(9,0),
@@ -39,7 +39,6 @@ def testsettings():
         liste = terminedic,
         inSparte = 'Jugend',
         inFahrtname = "irgendwas für die jugend",
-        inSpartennr = 1,
         inStartDatum = datetime.date(2023,1,3),
         inEndDatum = datetime.date(2023,1,5),
         inAnsprechpartner = ansprechpartner[2],
@@ -49,7 +48,6 @@ def testsettings():
         liste = terminedic,
         inSparte = 'Kanupolo',
         inFahrtname = "Boote flicken",
-        inSpartennr = 3,
         inStartDatum =  datetime.date(2023,4,6),
         inStartzeit= datetime.time(12,0),
         inEndzeit= datetime.time(15,0),
@@ -60,7 +58,6 @@ def testsettings():
         liste = terminedic,
         inSparte = 'Jugend',
         inFahrtname = "irgendwas für die jugend",
-        inSpartennr = 1,
         inStartDatum = datetime.date(2023,6,7),
         inEndDatum = datetime.date(2023,6,9),
         inAnsprechpartner = ansprechpartner[2],
@@ -70,13 +67,15 @@ def testsettings():
         liste = terminedic,
         inSparte = 'Wildwasser',
         inFahrtname = "Lehrgang Christi Himmelfahrt",
-        inSpartennr = 2,
         inStartDatum = datetime.date(2023,5,18),
         inEndDatum = datetime.date(2023,5,21),
         inAnsprechpartner = ansprechpartner[3],
         inAnsprechpartnerKCW = ansprechpartner[2],
-        inFließtext = "n bissi text",
         inItems = ["Paddeln auf der Salza", "Bissi Bootfahren"]
     )
     sparten = ["Allgemein", "Polo", "Wildwasser"]
     return ansprechpartner, terminedic, sparten
+
+[ansprechpartner, terminedic, sparten] = testsettings()
+export = ICSexport(terminedic, sparten)
+export.export(filename='export.ics')
