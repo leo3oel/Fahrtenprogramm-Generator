@@ -47,12 +47,15 @@ class MainWin(tk.Tk):
         else:
             self.__frame = Scrollable(self)
 
+        if self.__file:
+            self.__savefile()
+
         
         for widget in self.__frame.winfo_children(): # destroy all widgets
             widget.destroy()
 
         self.__makemenubar()
-        
+        self.__terminedic = structurizelist(self.__terminedic)
 
         startdatum_label = []
         enddatum_label = []
