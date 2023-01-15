@@ -16,7 +16,7 @@ def structurizelist(list):
     
     # Sort List by Date
     list = sorted(list, key=lambda i: i['StartDatum'])
-
+    return list
     """ # Make List of Sparten
     spartenliste = []
     for fahrt in list:
@@ -30,8 +30,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
     Exports a list of dictionarys into a tex file, needs to import a preamble
     '''
     spartenliste = []
-    structurizelist(terminefilename)
-
+    terminefilename = structurizelist(terminefilename)
     # check for needed sparten
     for sparte in spartenlisteold:
         for fahrt in terminefilename:
@@ -201,23 +200,23 @@ def clearfliesstext(dict):
                 char = string[-1]
             dic['Fliesstext'] = string
 
-class CSVexport():
+class ICSexport():
 
-    def __init__(self, terminefilename, spartenlisteold, filenameOut, ansprechpartnerliste):
+    def __init__(self, terminefilename, ansprechpartnerliste):
         self.termineliste = terminefilename
-        self.spartenliste = spartenlisteold
-        self.filename = filenameOut
         self.ansprechpartner = ansprechpartnerliste
-        self.csvfile = Calendar()
-        self.csvfile.add('prodid', '-//Paddel Kalender//')
-        self.csvfile.add('version', '2.0')
+        self.icsfile = Calendar()
+        self.icsfile.add('prodid', '-//Paddel Kalender//')
+        self.icsfile.add('version', '2.0')
 
-    def export(self):
+    def export(self, filename):
         if not self.termineliste:
             return 0
         structurizelist(self.termineliste)
         for fahrtindex in range(len(self.termineliste)):
             self.makecsvdate(fahrtindex)
+        with open(filename, "wb") as file:
+            file.write(self.icsfile.to_ical())
 
     def makecsvdate(self, number):
         event = Event()
@@ -225,7 +224,7 @@ class CSVexport():
         event.add('description', self.getdescription(number))
         event.add('dtstart', self.getdate("Start",number))
         event.add('dtend', self.getdate("End",number))
-        self.csvfile.add_component(event)
+        self.icsfile.add_component(event)
 
     def getdescription(self, number):
         description = ''
@@ -240,10 +239,24 @@ class CSVexport():
         pass
 
     def getdate(self, type,number):
+        """
+        If startzeit but no endzeit just assume 4 hours
+        Names not working
+        """
+
         date = self.termineliste[number][f'{type}Datum']
         zeit = self.termineliste[number][f'{type}zeit']
 
-        if zeit:
-            datetime(date.year, date.month, date.day, zeit[:2], zeit[3:], 0, tzinfo=pytz.utc)
+        if zeit and not date:
+            date = self.termineliste[number][f'StartDatum']
+            date =  datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)#, tzinfo=pytz.utc)
+            return date
+        elif zeit:
+            date =  datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)#, tzinfo=pytz.utc)
+            return date
+        elif date:
+            return datetime.datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
         else:
-            datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
+            date = self.termineliste[number][f'StartDatum']
+            date += datetime.timedelta(days=1)
+            return datetime.datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
