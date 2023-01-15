@@ -16,6 +16,56 @@
         },
         {
             "Sparte": "Wildwasser",
+            "Fahrtname": "44. Wildwasserfahrt auf erzgebirgischen Wildflüssen",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-03-31",
+            "EndDatum": "2023-04-02",
+            "Ansprechpartner": "Anne",
+            "AnsprechpartnerKCW": "Volker",
+            "Fliesstext": "",
+            "items": [
+                "Ort:  Warmbad Wolkenstein",
+                "Ausrichter: Sportclub Berlin - Grünau e.V.",
+                "Anmeldung bereits abgeschlossen, Nachmeldung evtl. auf Nachfrage möglich"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Huningue",
+            "Startzeit": "06:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-15",
+            "EndDatum": "2023-04-16",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Huningue",
+                "Übernachtung im gemietetem Haus",
+                "Wildwassertraining auf dem Kanal",
+                "Vor allem für Jugend und Anfänger gedacht"
+            ]
+        },
+        {
+            "Sparte": "Jugend",
+            "Fahrtname": "Huningue",
+            "Startzeit": "06:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-15",
+            "EndDatum": "2023-04-16",
+            "Ansprechpartner": "Julia",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Huningue",
+                "Übernachtung im gemietetem Haus",
+                "Wildwassertraining auf dem Kanal",
+                "Vor allem für Jugend und Anfänger gedacht"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
             "Fahrtname": "Erster Mai Fahrt",
             "Startzeit": "",
             "Endzeit": "",
@@ -25,7 +75,23 @@
             "AnsprechpartnerKCW": null,
             "Fliesstext": "",
             "items": [
-                "Ziel noch Unbekannt"
+                "Schwierigkeit: WW II bis WW III",
+                "Ort: Häselgehr",
+                "Gepaddelt werden: Lech, Loisach, Ammer"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Trainingstag Kanupolo",
+            "Startzeit": "09:00",
+            "Endzeit": "",
+            "StartDatum": "2023-05-06",
+            "EndDatum": null,
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Trainingstag am KCW"
             ]
         },
         {
@@ -60,6 +126,20 @@
             ]
         },
         {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Trainingstag Kanupolo",
+            "Startzeit": "09:00",
+            "Endzeit": "",
+            "StartDatum": "2023-06-03",
+            "EndDatum": null,
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Trainingstag am KCW"
+            ]
+        },
+        {
             "Sparte": "Wildwasser",
             "Fahrtname": "Durance/Seealpen",
             "Startzeit": "",
@@ -75,19 +155,17 @@
             ]
         },
         {
-            "Sparte": "Wildwasser",
-            "Fahrtname": "Haiming",
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Bayrische Meisterschaft",
             "Startzeit": "",
             "Endzeit": "",
-            "StartDatum": "2023-09-29",
-            "EndDatum": "2023-10-03",
-            "Ansprechpartner": "Sebastian",
+            "StartDatum": "2023-06-24",
+            "EndDatum": "2023-06-25",
+            "Ansprechpartner": "Timo",
             "AnsprechpartnerKCW": null,
             "Fliesstext": "",
             "items": [
-                "Schwierigkeit: WW II bis WW IV",
-                "Ort: Haiming",
-                "Gepaddelt werden: Ötz, Inn und Sanna"
+                "Ausrichter: Kehlheim"
             ]
         },
         {
@@ -123,20 +201,36 @@
             ]
         },
         {
-            "Sparte": "Wildwasser",
-            "Fahrtname": "Huningue",
-            "Startzeit": "06:00",
+            "Sparte": "Jugend",
+            "Fahrtname": "BKV Lehrgang Lechtal",
+            "Startzeit": "",
             "Endzeit": "",
-            "StartDatum": "2023-04-15",
-            "EndDatum": "2023-04-16",
+            "StartDatum": "2023-09-16",
+            "EndDatum": "2023-09-17",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Leo",
+            "Fliesstext": "",
+            "items": [
+                "Schulung für Erwachsene sowie Familien (incl. Kinder)",
+                "Schwierigkeit: WW I bis WW III",
+                "Ort: Vorderhornbach",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/644/Wildwasser-Lehrgang-3-Schulung-fuer-Erwachsene-sowie-Familien-incl-Kinder/"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Haiming",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-29",
+            "EndDatum": "2023-10-03",
             "Ansprechpartner": "Sebastian",
             "AnsprechpartnerKCW": null,
             "Fliesstext": "",
             "items": [
-                "Ort: Huningue",
-                "Übernachtung im gemietetem Haus",
-                "Wildwassertraining auf dem Kanal",
-                "Vor allem für Jugend und Anfänger gedacht"
+                "Schwierigkeit: WW II bis WW IV",
+                "Ort: Haiming",
+                "Gepaddelt werden: Ötz, Inn und Sanna"
             ]
         }
     ],
@@ -181,6 +275,18 @@
             "Bernd Sachs",
             "ww-breitensport@kanu-bayern.de",
             "m",
+            false
+        ],
+        [
+            "Volker",
+            "v.woehrn@arcor.de",
+            "m",
+            true
+        ],
+        [
+            "Anne",
+            "anne\\_fathke@arcor.de",
+            "w",
             false
         ]
     ],
