@@ -121,6 +121,23 @@
                 "Ort: Vorderhornbach",
                 "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/644/Wildwasser-Lehrgang-3-Schulung-fuer-Erwachsene-sowie-Familien-incl-Kinder/"
             ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Huningue",
+            "Startzeit": "06:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-15",
+            "EndDatum": "2023-04-16",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Huningue",
+                "Übernachtung im gemietetem Haus",
+                "Wildwassertraining auf dem Kanal",
+                "Vor allem für Jugend und Anfänger gedacht"
+            ]
         }
     ],
     [
