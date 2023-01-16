@@ -184,6 +184,20 @@
             ]
         },
         {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Kanupolo Turnier Würzburg",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-01",
+            "EndDatum": "2023-09-03",
+            "Ansprechpartner": "Leo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Termin unter Vorbehalt"
+            ]
+        },
+        {
             "Sparte": "Wildwasser",
             "Fahrtname": "BKV Lehrgang Lechtal",
             "Startzeit": "",
