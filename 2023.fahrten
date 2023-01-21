@@ -302,6 +302,21 @@
             ]
         },
         {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Plattling",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-07-29",
+            "EndDatum": "2023-07-30",
+            "Ansprechpartner": "Leo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Surfen in der Welle in Plattling",
+                "Abhängig vom Wasserstand"
+            ]
+        },
+        {
             "Sparte": "Kanuwandern",
             "Fahrtname": "Deutsch, italienisches, niederländisches Freundschaftstreffen",
             "Startzeit": "",

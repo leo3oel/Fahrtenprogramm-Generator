@@ -1,28 +1,21 @@
 import datetime
 import subprocess
-from DateTime import daymonthyear
 from DateTime import daymonth
 from icalendar import Calendar, Event, vCalAddress, vText
 import pytz
 
 
 def makepdfanddisplay(filename):
-    subprocess.run(["lualatex", filename])
-    subprocess.run(["lualatex", filename])
+    for i in range(3):
+        subprocess.run(["lualatex", filename])
     subprocess.Popen(["zathura", filename[:-3]+"pdf"])
 
 
-def structurizelist(list):
+def structurizelist(terminList):
     
     # Sort List by Date
-    list = sorted(list, key=lambda i: i['StartDatum'])
-    return list
-    """ # Make List of Sparten
-    spartenliste = []
-    for fahrt in list:
-        if fahrt['Sparte'] not in spartenliste:
-            spartenliste.insert(fahrt['Spartennr'], fahrt['Sparte'])
-    return spartenliste """
+    terminList = sorted(terminList, key=lambda i: i['StartDatum'])
+    return terminList
 
 
 def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpartnerliste, bemerkungenvorneweg=None):

@@ -14,9 +14,10 @@ from tkinter import filedialog
 import json
 from json import JSONEncoder
 from dateutil import parser
+from DateTime import daymonthyear
 
 class MainWin(tk.Tk):
-    
+
     __file = None
     __filename = None
     __frame = None
@@ -30,7 +31,7 @@ class MainWin(tk.Tk):
     __vorbemerkung = ""
 
     def __init__(self):
-        
+
         tk.Tk.__init__(self)
         self.minsize(900, 500)
         self.main_frame = tk.Frame(self)
@@ -50,7 +51,7 @@ class MainWin(tk.Tk):
         if self.__file:
             self.__savefile()
 
-        
+
         for widget in self.__frame.winfo_children(): # destroy all widgets
             widget.destroy()
 
@@ -68,10 +69,10 @@ class MainWin(tk.Tk):
         self.__frame.columnconfigure(2, weight =2) # Sparte
         self.__frame.columnconfigure(3, weight =4) # Name
         self.__frame.columnconfigure(4, weight =1) # Pushbuttons
-        
+
         startdatum_label.append(tk.Label(self.__frame, text="Startdatum"))
         startdatum_label[0].grid(column=0,row=0,padx=5,pady=5, sticky=tk.W)
-        
+
         enddatum_label.append(tk.Label(self.__frame, text="Enddatum"))
         enddatum_label[0].grid(column=1,row=0,padx=5,pady=5, sticky=tk.W)
 
@@ -88,7 +89,7 @@ class MainWin(tk.Tk):
 
         if not fahrtennr:
             for increment in range(1,len(self.__terminedic)+1):
-                
+
                 startdatum_label.append(tk.Label(self.__frame, text=daymonthyear(self.__terminedic[increment-1]['StartDatum'])))
                 startdatum_label[increment].grid(column=0,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
@@ -108,9 +109,9 @@ class MainWin(tk.Tk):
 
     def __makemenubar(self):
 
-        mn = tk.Menu(self) 
-        self.config(menu=mn) 
-        
+        mn = tk.Menu(self)
+        self.config(menu=mn)
+
         mn.add_command(label = "Öffnen", command=self.__openfile)
         mn.add_command(label = "Speichern", command=self.__savefile)
         mn.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
@@ -122,7 +123,7 @@ class MainWin(tk.Tk):
 
 
     def __openfile(self):
-        
+
         if not self.__file:
             self.__file = filedialog.askopenfile()
             if self.__file:
@@ -140,7 +141,7 @@ class MainWin(tk.Tk):
 
 
     def __savefile(self):
-        
+
         if not self.__file:
             self.__file = filedialog.asksaveasfile(mode="w", initialfile=".fahrten")
             if self.__file:
@@ -156,9 +157,10 @@ class MainWin(tk.Tk):
 
 
     def __makejson(self):
-        
-        return json.dumps([self.__terminedic, self.__ansprechpartner, self.__sparten, self.__vorbemerkung], cls=DateTimeEncoder, indent=4, ensure_ascii=False)
-            
+
+        return json.dumps([self.__terminedic, self.__ansprechpartner, self.__sparten, self.__vorbemerkung],
+                          cls=DateTimeEncoder, indent=4, ensure_ascii=False)
+
 
     def __exportwin(self):
 
@@ -171,7 +173,8 @@ class MainWin(tk.Tk):
         dateiname_label = tk.Label(self.__exportwindow, text="Dateinamen:")
         dateiname_label.grid(column=0,row=0,padx=5,pady=5, sticky=tk.W)
 
-        dateiname_button = tk.Button(self.__exportwindow, text="Ordner/Dateinamen auswaehlen", command=self.__selectexportfilename)
+        dateiname_button = tk.Button(self.__exportwindow, text="Ordner/Dateinamen auswaehlen",
+                                     command=self.__selectexportfilename)
         dateiname_button.grid(column=1,row=0,padx=5,pady=5, sticky=tk.W)
 
         self.__tex = tk.IntVar()
@@ -180,7 +183,8 @@ class MainWin(tk.Tk):
         self.__tex.trace("w", self.__togglepreamble)
 
         pdf = tk.IntVar()
-        self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument, benötigt LaTeX Installation", variable=pdf, onvalue=1,offvalue=0)
+        self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument, benötigt LaTeX Installation",
+                                       variable=pdf, onvalue=1,offvalue=0)
         self.__cb_pdf.grid(column=0,row=3, columnspan=2,padx=5,pady=5)
         self.__cb_pdf.grid_remove()
 
@@ -189,7 +193,8 @@ class MainWin(tk.Tk):
         self.__preamble_label.grid_remove()
 
         keeplogs = tk.IntVar()
-        self.__keeplogs = tk.Checkbutton(self.__exportwindow, text="Log Dateien behalten", variable=keeplogs, onvalue=1,offvalue=0)
+        self.__keeplogs = tk.Checkbutton(self.__exportwindow, text="Log Dateien behalten",
+                                         variable=keeplogs, onvalue=1,offvalue=0)
         self.__keeplogs.grid(column=0,row=4, columnspan=2,padx=5,pady=5)
         self.__keeplogs.grid_remove()
 
@@ -197,7 +202,8 @@ class MainWin(tk.Tk):
         self.__preamble_button.grid(column=1,row=5,padx=5,pady=5, sticky=tk.W)
         self.__preamble_button.grid_remove()
 
-        export_btn = tk.Button(self.__exportwindow, text="Exportieren", command=lambda: self.__export(self.__tex.get(),pdf.get(), keeplogs.get()))
+        export_btn = tk.Button(self.__exportwindow, text="Exportieren",
+                               command=lambda: self.__export(self.__tex.get(),pdf.get(), keeplogs.get()))
         export_btn.grid(column=0,row=50, columnspan=2,padx=5,pady=5)
 
         self.__exportwindow.mainloop()
@@ -215,7 +221,7 @@ class MainWin(tk.Tk):
 
         text_entry = scrolledtext.ScrolledText(vorbemerkungswindow, wrap=tk.WORD, width=200, height=40)
         text_entry.grid(column=0,row=1,padx=5,pady=5, sticky=tk.W)
-        
+
         text_entry.insert(tk.END, self.__vorbemerkung)
 
         save_bt = tk.Button(vorbemerkungswindow, text="Speichern", command=lambda: self.__savevorbemerkung(text_entry.get("1.0", tk.END), vorbemerkungswindow))
@@ -223,9 +229,9 @@ class MainWin(tk.Tk):
 
         vorbemerkungswindow.mainloop()
 
-    
+
     def __savevorbemerkung(self, text, topwin):
-        
+
         # delete linebreaks
         if text:
             char = text[-1]
@@ -248,18 +254,20 @@ class MainWin(tk.Tk):
             self.__cb_pdf.grid_remove()
             self.__keeplogs.grid_remove()
 
-    
+
     def __openpreamble(self):
 
         preamble = filedialog.askopenfile(parent=self.__exportwindow)
-        if preamble:            
+        if preamble:
             self.__preamble_filename = preamble.name
             preamble.close
 
 
     def __selectexportfilename(self):
-        
-        msgbox.showinfo("Bitte keine Dateiendung eingeben", "Bitte keine Dateiendung eingeben, Dateiendungen werden automatisch festgelegt", parent=self.__exportwindow)
+
+        msgbox.showinfo("Bitte keine Dateiendung eingeben",
+                        "Bitte keine Dateiendung eingeben, Dateiendungen werden automatisch festgelegt",
+                        parent=self.__exportwindow)
         efile = filedialog.asksaveasfile(parent=self.__exportwindow)
         if efile:
             self.__exportfilename = efile.name
@@ -277,9 +285,10 @@ class MainWin(tk.Tk):
         if tex:
             if not self.__preamble_filename:
                 msgbox.showerror("Fehler", "Bitte Preamble auswählen")
-                return 0 
+                return 0
             else:
-                texport(self.__terminedic,self.__sparten, self.__preamble_filename, texfilename, self.__ansprechpartner, self.__vorbemerkung)
+                texport(self.__terminedic, self.__sparten, self.__preamble_filename, texfilename,
+                        self.__ansprechpartner, self.__vorbemerkung)
         if pdf:
             makepdfanddisplay(texfilename)
         if logs:
@@ -300,7 +309,7 @@ class MainWin(tk.Tk):
     def __addfahrt(self, number):
 
         EditFahrten(self, self.__sparten, self.__terminedic, self.__ansprechpartner, number)
-        
+
 
 class Scrollable(tk.Frame):
     """
@@ -339,7 +348,7 @@ class Scrollable(tk.Frame):
 
         self.update_idletasks()
         self.canvas.config(scrollregion=self.canvas.bbox(self.windows_item))
-    
+
 class DateTimeEncoder(JSONEncoder):
         #Override the default method
         def default(self, obj):
