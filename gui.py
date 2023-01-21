@@ -82,7 +82,8 @@ class MainWin(tk.Tk):
         name_label.append(tk.Label(self.__frame, text="Fahrtenname"))
         name_label[0].grid(column=3,row=0,padx=5,sticky=tk.W)
 
-        fahrt_add_btn = tk.Button(self.__frame, text="Fahrt hinzufügen", command=lambda: self.__addfahrt(len(self.__terminedic)+1))
+        fahrt_add_btn = tk.Button(self.__frame, text="Fahrt hinzufügen",
+                                  command=lambda: self.__addfahrt(len(self.__terminedic)+1))
         fahrt_add_btn.grid(column=4,row=0,padx=5,sticky=tk.E)
 
         hline(self.__frame, 1,5)
@@ -102,7 +103,8 @@ class MainWin(tk.Tk):
                 name_label.append(tk.Label(self.__frame, text=self.__terminedic[increment-1]['Fahrtname']))
                 name_label[increment].grid(column=3,row=increment+2,padx=5,pady=5, sticky=tk.W)
 
-                edit_buttons.append(tk.Button(self.__frame,text="Bearbeiten",command=lambda c=increment: self.__editfahrt(c-1)))
+                edit_buttons.append(tk.Button(self.__frame,text="Bearbeiten",
+                                              command=lambda c=increment: self.__editfahrt(c-1)))
                 edit_buttons[increment-1].grid(column=4, row=increment+2,padx=5,pady=5,sticky=tk.E)
 
         self.__frame.update()
@@ -224,7 +226,8 @@ class MainWin(tk.Tk):
 
         text_entry.insert(tk.END, self.__vorbemerkung)
 
-        save_bt = tk.Button(vorbemerkungswindow, text="Speichern", command=lambda: self.__savevorbemerkung(text_entry.get("1.0", tk.END), vorbemerkungswindow))
+        save_bt = tk.Button(vorbemerkungswindow, text="Speichern",
+                            command=lambda: self.__savevorbemerkung(text_entry.get("1.0", tk.END), vorbemerkungswindow))
         save_bt.grid(column=0,row=2)
 
         vorbemerkungswindow.mainloop()
