@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/leodesktopF/git/Fahrtenprogramm_Generator/.venv"
+VIRTUAL_ENV="/home/thinkleo/git/Fahrtenprogramm_Generator/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
