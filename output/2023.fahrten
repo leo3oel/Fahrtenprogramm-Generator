@@ -1,17 +1,98 @@
 [
     [
         {
-            "Sparte": "Wildwasser",
-            "Fahrtname": "Neujahrs Fahrt",
+            "Sparte": "Allgemein",
+            "Fahrtname": "Arbeitsdienst",
             "Startzeit": "09:00",
             "Endzeit": "",
-            "StartDatum": "2023-01-08",
+            "StartDatum": "2023-03-25",
             "EndDatum": null,
+            "Ansprechpartner": "Vorstand",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Arbeitsdienst am KCW"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "44. Wildwasserfahrt auf erzgebirgischen Wildflüssen",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-03-31",
+            "EndDatum": "2023-04-02",
+            "Ansprechpartner": "Anne",
+            "AnsprechpartnerKCW": "Volker",
+            "Fliesstext": "",
+            "items": [
+                "Ort:  Warmbad Wolkenstein",
+                "Ausrichter: Sportclub Berlin - Grünau e.V.",
+                "Anmeldung bereits abgeschlossen, Nachmeldung evtl. auf Nachfrage möglich"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Karfreitags Paddeln",
+            "Startzeit": "08:30",
+            "Endzeit": "",
+            "StartDatum": "2023-04-07",
+            "EndDatum": null,
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Traditionelles, leicht sportliches ,,Karfreitags-Paddeln'' auf einem Kleinfluss in der Nähe",
+                "Treffpunkt: am KCW"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Huningue",
+            "Startzeit": "06:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-15",
+            "EndDatum": "2023-04-16",
             "Ansprechpartner": "Sebastian",
             "AnsprechpartnerKCW": null,
             "Fliesstext": "",
             "items": [
-                "Fahrt auf Kleinfluss in der Nähe, z.B. Sinn "
+                "Ort: Huningue",
+                "Übernachtung im gemietetem Haus",
+                "Wildwassertraining auf dem Kanal",
+                "Vor allem für Jugend und Anfänger gedacht"
+            ]
+        },
+        {
+            "Sparte": "Jugend",
+            "Fahrtname": "Huningue",
+            "Startzeit": "06:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-15",
+            "EndDatum": "2023-04-16",
+            "Ansprechpartner": "Julia",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Huningue",
+                "Übernachtung im gemietetem Haus",
+                "Wildwassertraining auf dem Kanal",
+                "Vor allem für Jugend und Anfänger gedacht"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Anpaddeln",
+            "Startzeit": "10:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-23",
+            "EndDatum": null,
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Strecke: Ochsenfurt bis zum KCW (ca. 20km)",
+                "Kurzstrecke: Winterhausen zum KCW (ca. 12km)",
+                "Treffpunkt: am KCW"
             ]
         },
         {
@@ -25,7 +106,52 @@
             "AnsprechpartnerKCW": null,
             "Fliesstext": "",
             "items": [
-                "Ziel noch Unbekannt"
+                "Schwierigkeit: WW II bis WW III",
+                "Ort: Häselgehr",
+                "Gepaddelt werden: Lech, Loisach, Ammer"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Bezirkswanderfahrt in Würzburg",
+            "Startzeit": "15:00",
+            "Endzeit": "",
+            "StartDatum": "2023-04-28",
+            "EndDatum": "2023-04-30",
+            "Ansprechpartner": "Edgar König",
+            "AnsprechpartnerKCW": "Rainer",
+            "Fliesstext": "",
+            "items": [
+                "Wanderfahrten von ca. 20km Länge",
+                "Anmeldung ung Gebühren ca. 2 Wochen vorher"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Trainingstag Kanupolo",
+            "Startzeit": "09:00",
+            "Endzeit": "",
+            "StartDatum": "2023-05-06",
+            "EndDatum": null,
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Trainingstag am KCW"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Besuch im Walderlebniszentrum Einsiedel",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-05-13",
+            "EndDatum": null,
+            "Ansprechpartner": "Michael",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Startzeit und Treffpunkt werden noch bekannt gegeben"
             ]
         },
         {
@@ -43,6 +169,359 @@
                 "Ort: Wildalpen",
                 "Meldeschluss: 21.04.2023 (sehr schnell ausgebucht)",
                 "Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/642/Wildwasser-Lehrgang-1/"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Pfingst Fahrt",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-05-25",
+            "EndDatum": "2023-05-29",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: noch unbekannt"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Trainingstag Kanupolo",
+            "Startzeit": "09:00",
+            "Endzeit": "",
+            "StartDatum": "2023-06-03",
+            "EndDatum": null,
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Trainingstag am KCW"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Durance/Seealpen",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-06-08",
+            "EndDatum": "2023-06-18",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Schwierigkeit: WW II bis WW IV",
+                "Bis 13.06 Durance, anschließend weiterfahrt z den Seealpen"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "50. Bayrisches Wanderfahrertreffen im ,,Herrgottswinkel''",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-06-14",
+            "EndDatum": "2023-06-18",
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Anmeldung: www.kanu-bayern.de/Freizeitsport/Kanuwandern/Termine/668/50-Bayerisches-Kanu-Wanderfahrertreffen/",
+                "Veranstalter: TSV Schongau"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Bayrische Meisterschaft",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-06-24",
+            "EndDatum": "2023-06-25",
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ausrichter: Kehlheim"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Sommerfest",
+            "Startzeit": "17:00",
+            "Endzeit": "",
+            "StartDatum": "2023-07-01",
+            "EndDatum": null,
+            "Ansprechpartner": "Michael",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Sommerfest am Bootssteg"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Frauenfahrt",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-07-07",
+            "EndDatum": "2023-07-09",
+            "Ansprechpartner": "Angelika Gardemann",
+            "AnsprechpartnerKCW": "Rainer",
+            "Fliesstext": "",
+            "items": [
+                "Kanufrauen Touren auf dem Main",
+                "Ausrichter: TG Würzburg-Heidingsfeld"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "BKV Lehrgang Augsburg",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-07-14",
+            "EndDatum": "2023-07-16",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Sebastian",
+            "Fliesstext": "",
+            "items": [
+                "Technik-Lehrgang am Augsburger Eiskanal",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/643/Wildwasser-Lehrgang-2/"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Plattling",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-07-29",
+            "EndDatum": "2023-07-30",
+            "Ansprechpartner": "Leo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Surfen in der Welle in Plattling",
+                "Abhängig vom Wasserstand"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Deutsch, italienisches, niederländisches Freundschaftstreffen",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-08-07",
+            "EndDatum": "2023-08-10",
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ausrichter: KC-Klingenberg"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Fun-Turnier Jena",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-08-26",
+            "EndDatum": "2023-08-27",
+            "Ansprechpartner": "Timo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Auch für Turnierneulinge geeignet"
+            ]
+        },
+        {
+            "Sparte": "Jugend",
+            "Fahrtname": "Fun-Turnier Jena",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-08-26",
+            "EndDatum": "2023-08-27",
+            "Ansprechpartner": "Leo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Auch für Turnierneulinge geeignet"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Urlaubsfahrt der Unterfranken",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-08-27",
+            "EndDatum": "2023-09-02",
+            "Ansprechpartner": "Edgar König",
+            "AnsprechpartnerKCW": "Rainer",
+            "Fliesstext": "",
+            "items": [
+                "Ziel: Labusee"
+            ]
+        },
+        {
+            "Sparte": "Kanupolo",
+            "Fahrtname": "Kanupolo Turnier Würzburg",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-01",
+            "EndDatum": "2023-09-03",
+            "Ansprechpartner": "Leo",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Termin unter Vorbehalt"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "BKV Lehrgang Lechtal",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-16",
+            "EndDatum": "2023-09-17",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Sebastian",
+            "Fliesstext": "",
+            "items": [
+                "Schulung für Erwachsene sowie Familien (incl. Kinder)",
+                "Schwierigkeit: WW I bis WW III",
+                "Ort: Vorderhornbach",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/644/Wildwasser-Lehrgang-3-Schulung-fuer-Erwachsene-sowie-Familien-incl-Kinder/"
+            ]
+        },
+        {
+            "Sparte": "Jugend",
+            "Fahrtname": "BKV Lehrgang Lechtal",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-16",
+            "EndDatum": "2023-09-17",
+            "Ansprechpartner": "Bernd Sachs",
+            "AnsprechpartnerKCW": "Leo",
+            "Fliesstext": "",
+            "items": [
+                "Schulung für Erwachsene sowie Familien (incl. Kinder)",
+                "Schwierigkeit: WW I bis WW III",
+                "Ort: Vorderhornbach",
+                "Weitere Informationen und Anmeldung: www.kanu-bayern.de/Freizeitsport/WW-Breitensport/Termine/644/Wildwasser-Lehrgang-3-Schulung-fuer-Erwachsene-sowie-Familien-incl-Kinder/"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Zwetschgenkuchenfahrt",
+            "Startzeit": "08:00",
+            "Endzeit": "",
+            "StartDatum": "2023-09-23",
+            "EndDatum": null,
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Strecke: Mainschleife von Volkach bis Albertshofen",
+                "Meldeschluss: 11.09",
+                "Anmeldunng via Schwarzes Brett",
+                "Bootsverladung: Freitag, ca 17:00"
+            ]
+        },
+        {
+            "Sparte": "Kanuwandern",
+            "Fahrtname": "Abpaddeln",
+            "Startzeit": "10:00",
+            "Endzeit": "",
+            "StartDatum": "2023-09-24",
+            "EndDatum": null,
+            "Ansprechpartner": "Rainer",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Strecke: Ochsenfurt bis KC Würzburg (ca. 20km)",
+                "Kurzstrecke: Winterhausen bis KC Würzbg (ca. 12km)",
+                "Treffpunkt: am KCW"
+            ]
+        },
+        {
+            "Sparte": "Wildwasser",
+            "Fahrtname": "Haiming",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-09-29",
+            "EndDatum": "2023-10-03",
+            "Ansprechpartner": "Sebastian",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Schwierigkeit: WW II bis WW IV",
+                "Ort: Haiming",
+                "Gepaddelt werden: Ötz, Inn und Sanna"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Besuch im Röntgen-Museum",
+            "Startzeit": "",
+            "Endzeit": "",
+            "StartDatum": "2023-10-07",
+            "EndDatum": null,
+            "Ansprechpartner": "Michael",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Startzeit und Treffpunkt werden noch bekannt gegeben"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Jahreshauptversammlung",
+            "Startzeit": "19:30",
+            "Endzeit": "",
+            "StartDatum": "2023-10-13",
+            "EndDatum": null,
+            "Ansprechpartner": "Vorstand",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Gaststätte KCW",
+                "Mit Neuwahlen"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Arbeitsdienst",
+            "Startzeit": "09:00",
+            "Endzeit": "",
+            "StartDatum": "2023-11-18",
+            "EndDatum": null,
+            "Ansprechpartner": "Vorstand",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Arbeitsdienst am KCW"
+            ]
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Nikolaus am Bootssteg",
+            "Startzeit": "15:00",
+            "Endzeit": "",
+            "StartDatum": "2023-12-10",
+            "EndDatum": null,
+            "Ansprechpartner": "Michael",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": []
+        },
+        {
+            "Sparte": "Allgemein",
+            "Fahrtname": "Weihnachtsfeier mit Programm",
+            "Startzeit": "19:00",
+            "Endzeit": "",
+            "StartDatum": "2023-12-16",
+            "EndDatum": null,
+            "Ansprechpartner": "Michael",
+            "AnsprechpartnerKCW": null,
+            "Fliesstext": "",
+            "items": [
+                "Ort: Vereinsgaststätte"
             ]
         }
     ],
@@ -88,6 +567,42 @@
             "ww-breitensport@kanu-bayern.de",
             "m",
             false
+        ],
+        [
+            "Volker",
+            "v.woehrn@arcor.de",
+            "m",
+            true
+        ],
+        [
+            "Anne",
+            "anne\\_fathke@arcor.de",
+            "w",
+            false
+        ],
+        [
+            "Rainer",
+            "kanuwandern@kc-wuerzburg.de",
+            "m",
+            true
+        ],
+        [
+            "Angelika Gardemann",
+            "frauen@kanu-unterfranken.de",
+            "w",
+            false
+        ],
+        [
+            "Edgar König",
+            "kanuwandern@kanu-unterfranken.de",
+            "m",
+            false
+        ],
+        [
+            "Isa Winter Brand",
+            "2.vorstand@kanu-unterfranken.de",
+            "w",
+            false
         ]
     ],
     [
@@ -97,5 +612,5 @@
         "Wildwasser",
         "Kanupolo"
     ],
-    "\\paragraph{Allgemein}\\mbox{}\\\\\nAlle Termine sind bald auch auf unserem Google Kalender auf unserer Homepage zu finden.\n\\paragraph{Wildwasser}\\mbox{}\\\\\nDie Teilnahme an allen Fahrten erfolgt auf eigene Gefahr. Jede Haftung des Veranstalters und seiner Hilfspersonen für Personen- und Sachschäden ist ausgeschlossen, außer bei Vorsatz oder grober Fahrlässigkeit. Auch bei Wanderfahrten ist das Tragen von Schwimmwesten Pflicht. Ebenso ist auf, der Wassertemperatur angepasster, Kleidung zu achten.\n\n\nWildwasserfahrten nur mit entsprechender Ausrüstung: Wildwasserboot mit Auftriebskörpern und Bergegriffen, Schutzhelm, Wildwasserschwimmweste, Wurfsack, Kälteschutzkleidung für das Wasser (Neopren, Paddeljacke oder Trockenanzug), feste Paddelschuhe. Eine Haftung für Sachschäden oder Diebstahl ist ausgeschlossen."
+    "\\paragraph{Allgemein}\\mbox{}\\\\\nAlle Termine sind bald auch in Klubraum zu finden.\n\\paragraph{Wildwasser}\\mbox{}\\\\\nDie Teilnahme an allen Fahrten erfolgt auf eigene Gefahr. Jede Haftung des Veranstalters und seiner Hilfspersonen für Personen- und Sachschäden ist ausgeschlossen, außer bei Vorsatz oder grober Fahrlässigkeit. Auch bei Wanderfahrten ist das Tragen von Schwimmwesten Pflicht. Ebenso ist auf, der Wassertemperatur angepasster, Kleidung zu achten.\n\n\nWildwasserfahrten nur mit entsprechender Ausrüstung: Wildwasserboot mit Auftriebskörpern und Bergegriffen, Schutzhelm, Wildwasserschwimmweste, Wurfsack, Kälteschutzkleidung für das Wasser (Neopren, Paddeljacke oder Trockenanzug), feste Paddelschuhe. Eine Haftung für Sachschäden oder Diebstahl ist ausgeschlossen.\n\n\\paragraph{Kanuwandern}\\mbox{}\\\\\nZu beziehungsweise zwischen den Terminen werden natürlich noch weitere Fahrten stattfinden untder dem Motto, ,,wer hat Lust'' oder ,,wir könnten doch mal gemeinsam auf dem Fluss oder dem Bach fahren''.\n\nFür alle Termine gibt es Infos am schwarzen Brett oder auf der Homepage des KC-Würzburgs.\n\nInformationen zu Schulungen und Veranstaltungen: \\url{www.kanu-unterfranken.de}, bzw \\url{www.kanu-bayern.de}, \\url{www.kanu.de}.\n\nBitte führt ein Fahrtenbuch, das ist per EFB oder auf papier möglich. Das Fahrtenbuch ist für den persönlichen Versicherungsschutz und für den Verein bzw. den Verband von Vorteil."
 ]

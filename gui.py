@@ -9,7 +9,7 @@ from TeXport import *
 from basicgui import hline
 from EditFahrten import EditFahrten
 import os
-from os.path import exists
+
 from tkinter import filedialog
 import json
 from json import JSONEncoder
@@ -182,7 +182,7 @@ class MainWin(tk.Tk):
         self.__tex = tk.IntVar()
         cb_tex = tk.Checkbutton(self.__exportwindow, text="LaTeX Datei", variable=self.__tex, onvalue=1,offvalue=0)
         cb_tex.grid(column=0,row=2, columnspan=2,padx=5,pady=5)
-        self.__tex.trace("w", self.__togglepreamble)
+        self.__tex.trace("w", self.__toggleLaTeX)
 
         pdf = tk.IntVar()
         self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument, benötigt LaTeX Installation",
@@ -200,9 +200,11 @@ class MainWin(tk.Tk):
         self.__keeplogs.grid(column=0,row=4, columnspan=2,padx=5,pady=5)
         self.__keeplogs.grid_remove()
 
+        """
         self.__preamble_button = tk.Button(self.__exportwindow, text="Preamble öffnen", command=self.__openpreamble)
         self.__preamble_button.grid(column=1,row=5,padx=5,pady=5, sticky=tk.W)
         self.__preamble_button.grid_remove()
+        """
 
         export_btn = tk.Button(self.__exportwindow, text="Exportieren",
                                command=lambda: self.__export(self.__tex.get(),pdf.get(), keeplogs.get()))
@@ -244,16 +246,17 @@ class MainWin(tk.Tk):
         self.__vorbemerkung = text
         topwin.destroy()
 
-    def __togglepreamble(self, *args):
+    # TODO: delete self.preamble
+    def __toggleLaTeX(self, *args):
 
         if self.__tex.get():
-            self.__preamble_label.grid()
-            self.__preamble_button.grid()
+            #self.__preamble_label.grid()
+            #self.__preamble_button.grid()
             self.__cb_pdf.grid()
             self.__keeplogs.grid()
         else:
-            self.__preamble_label.grid_remove()
-            self.__preamble_button.grid_remove()
+            #self.__preamble_label.grid_remove()
+            #self.__preamble_button.grid_remove()
             self.__cb_pdf.grid_remove()
             self.__keeplogs.grid_remove()
 
@@ -285,26 +288,14 @@ class MainWin(tk.Tk):
             return 0
 
         texfilename = self.__exportfilename+".tex"
+
+        # TODO: change this
+        self.__preamble_filename = "appearancespecific/preamble.tex"
         if tex:
-            if not self.__preamble_filename:
-                msgbox.showerror("Fehler", "Bitte Preamble auswählen")
-                return 0
-            else:
-                texport(self.__terminedic, self.__sparten, self.__preamble_filename, texfilename,
-                        self.__ansprechpartner, self.__vorbemerkung)
+            texport(self.__terminedic, self.__sparten, self.__preamble_filename, texfilename,
+                    self.__ansprechpartner, self.__vorbemerkung)
         if pdf:
-            makepdfanddisplay(texfilename)
-        if logs:
-            pass
-        elif pdf:
-            if exists(self.__exportfilename+".toc"):
-                os.remove(self.__exportfilename+".toc")
-            if exists(self.__exportfilename+".out"):
-                os.remove(self.__exportfilename+".out")
-            if exists(self.__exportfilename+".aux"):
-                os.remove(self.__exportfilename+".aux")
-            if exists(self.__exportfilename+".log"):
-                os.remove(self.__exportfilename+".log")
+            makepdfanddisplay(texfilename, logs)
 
         self.__exportwindow.destroy()
 

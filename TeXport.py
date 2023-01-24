@@ -1,23 +1,44 @@
 import datetime
+import shutil
 import subprocess
 from DateTime import daymonth
 from icalendar import Calendar, Event, vCalAddress, vText
 import pytz
+import os
+from os.path import exists
 
 
-def makepdfanddisplay(filename):
+def makepdfanddisplay(filename, logs):
+    cwd = os.getcwd()
+    path = os.path.dirname(filename)
+    os.chdir(path)
     for i in range(3):
         subprocess.run(["lualatex", filename])
+    if not logs:
+        deleteLatexLogs(filename)
     subprocess.Popen(["zathura", filename[:-3]+"pdf"])
+    os.chdir(cwd)
+
+
+def deleteLatexLogs(filename):
+    exportfilename = filename[:-4]
+    if exists(exportfilename + ".toc"):
+        os.remove(exportfilename + ".toc")
+    if exists(exportfilename + ".out"):
+        os.remove(exportfilename + ".out")
+    if exists(exportfilename + ".aux"):
+        os.remove(exportfilename + ".aux")
+    if exists(exportfilename + ".log"):
+        os.remove(exportfilename + ".log")
 
 
 def structurizelist(terminList):
-    
+
     # Sort List by Date
     terminList = sorted(terminList, key=lambda i: i['StartDatum'])
     return terminList
 
-
+# TODO: Break down in smaller parts
 def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpartnerliste, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
@@ -32,6 +53,9 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
                     pass
                 else:
                     spartenliste.append(sparte)
+
+    # Copy Logo
+    shutil.copyfile(os.path.join(os.path.dirname(preamble), "logo.png"), os.path.join(os.path.dirname(filenameOut), "logo.png"))
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -89,7 +113,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
             for Fahrt in terminefilename:
 
                 if Fahrt['Sparte'] == sparte:
-                    
+
                     if (Fahrt['StartDatum'].month-1) != monat:
                         monat = (Fahrt['StartDatum'].month-1)
                         if monat < len(monatsnamen):

@@ -9,7 +9,6 @@ from DateTime import *
 import datetime
 import tkcalendar
 from tkcalendar import DateEntry
-from TextEntry import TextEntry
 from Ansprechpartner import Ansprechpartner
 
 
