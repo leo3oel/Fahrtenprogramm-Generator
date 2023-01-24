@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/leodesktopF/git/Fahrtenprogramm_Generator/.venv"
+set -gx VIRTUAL_ENV "/home/thinkleo/git/Fahrtenprogramm_Generator/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
