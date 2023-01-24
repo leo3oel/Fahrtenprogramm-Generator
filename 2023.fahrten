@@ -1,20 +1,6 @@
 [
     [
         {
-            "Sparte": "Wildwasser",
-            "Fahrtname": "Neujahrs Fahrt",
-            "Startzeit": "09:00",
-            "Endzeit": "",
-            "StartDatum": "2023-01-08",
-            "EndDatum": null,
-            "Ansprechpartner": "Sebastian",
-            "AnsprechpartnerKCW": null,
-            "Fliesstext": "",
-            "items": [
-                "Fahrt auf Kleinfluss in der Nähe, z.B. Sinn "
-            ]
-        },
-        {
             "Sparte": "Allgemein",
             "Fahrtname": "Arbeitsdienst",
             "Startzeit": "09:00",
