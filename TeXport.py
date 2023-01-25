@@ -16,7 +16,7 @@ def makepdfanddisplay(filename, logs):
         subprocess.run(["lualatex", filename])
     if not logs:
         deleteLatexLogs(filename)
-    subprocess.Popen(["zathura", filename[:-3]+"pdf"])
+    subprocess.Popen(["zathura", filename[:-3] + "pdf"])
     os.chdir(cwd)
 
 
@@ -33,12 +33,62 @@ def deleteLatexLogs(filename):
 
 
 def structurizelist(terminList):
-
     # Sort List by Date
     terminList = sorted(terminList, key=lambda i: i['StartDatum'])
     return terminList
 
+
 # TODO: Break down in smaller parts
+
+
+def markhyperlinks(string):
+    outputstring = ""
+    currentword = ""
+    for char in string:
+        if char == " " or char == "\n" or char == "," or char == ";":
+            if currentword[0:4] == "www.":
+                currentword = "\\href{" + currentword + "}{" + currentword + "}"
+            outputstring += currentword + char
+            currentword = ""
+        else:
+            currentword += char
+    if currentword[0:4] == "www.":
+        currentword = "\\url{" + currentword + "}"
+    outputstring += currentword
+    return outputstring
+
+
+def clearfliesstext(dict):
+    """
+    Deltes \n at the end
+    """
+
+    for dic in dict:
+        string = dic['Fliesstext']
+        if string:
+            char = string[-1]
+            while char == "\n":
+                string = string[:-1]
+                char = string[-1]
+            dic['Fliesstext'] = string
+
+
+class Export:
+
+    def __init__(self, termineDict, spartenList, personsList, filename, bemerkungen=None):
+        self._termineDict = termineDict
+        self._spartenList = spartenList
+        self._personsList = personsList
+        self._filename = filename
+        self._bemerkungen = bemerkungen
+
+
+class ExportTex(Export):
+
+    def __init__(self):
+        pass
+
+
 def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpartnerliste, bemerkungenvorneweg=None):
     '''
     Exports a list of dictionarys into a tex file, needs to import a preamble
@@ -55,7 +105,8 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
                     spartenliste.append(sparte)
 
     # Copy Logo
-    shutil.copyfile(os.path.join(os.path.dirname(preamble), "logo.png"), os.path.join(os.path.dirname(filenameOut), "logo.png"))
+    shutil.copyfile(os.path.join(os.path.dirname(preamble), "logo.png"),
+                    os.path.join(os.path.dirname(filenameOut), "logo.png"))
 
     # Read in Preamble
     with open(preamble) as inpreamble:
@@ -78,26 +129,25 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
         texfile.write(preamble + "\n\n%%%%%%%%%%%%%%%%%%%%% Generated File %%%%%%%%%%%%%%%%%%%%%\n")
         for sparte in spartenliste:
             texfile.write("\\fancypagestyle{" + sparte + "}{\n"
-                + "    \\fancyhead[L]{\\Large{\\textsc{" + sparte + "}}}\n"
-                + "    \\fancyhead[R]{\\includegraphics[width=1.75cm]{logo.png}}\n"
-                + "    \\renewcommand{\\headrulewidth}{0.5pt}\n"
-                + "    \\cfoot{\\thepage}\n"
-                + "}\n\n"
-            )
+                          + "    \\fancyhead[L]{\\Large{\\textsc{" + sparte + "}}}\n"
+                          + "    \\fancyhead[R]{\\includegraphics[width=1.75cm]{logo.png}}\n"
+                          + "    \\renewcommand{\\headrulewidth}{0.5pt}\n"
+                          + "    \\cfoot{\\thepage}\n"
+                          + "}\n\n"
+                          )
 
         texfile.write("\\begin{document}\n\n"
-            + "\\begingroup" + "\n"
-            + "    \\hypersetup{hidelinks}" + "\n"
-            + "    \\tableofcontents\\thispagestyle{fancy}" + "\n"
-            + "\\endgroup" + "\n"
-            + "\\reversemarginpar" + "\n" + "\n"
-        )
+                      + "\\begingroup" + "\n"
+                      + "    \\hypersetup{hidelinks}" + "\n"
+                      + "    \\tableofcontents\\thispagestyle{fancy}" + "\n"
+                      + "\\endgroup" + "\n"
+                      + "\\reversemarginpar" + "\n" + "\n"
+                      )
 
         if bemerkungenvorneweg:
             bemerkungenvorneweg = markhyperlinks(bemerkungenvorneweg)
             texfile.write("\\section*{Bemerkungen}")
             texfile.write(bemerkungenvorneweg)
-
 
         for sparte in spartenliste:
             texfile.write("\\chapter*{")
@@ -114,13 +164,13 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
 
                 if Fahrt['Sparte'] == sparte:
 
-                    if (Fahrt['StartDatum'].month-1) != monat:
-                        monat = (Fahrt['StartDatum'].month-1)
+                    if (Fahrt['StartDatum'].month - 1) != monat:
+                        monat = (Fahrt['StartDatum'].month - 1)
                         if monat < len(monatsnamen):
                             texfile.write("\\section*{" + monatsnamen[monat] + "}")
 
                     # Print Paragraphname
-                    texfile.write("\\paragraph{"+Fahrt['Fahrtname']+"}")
+                    texfile.write("\\paragraph{" + Fahrt['Fahrtname'] + "}")
 
                     # Print Marginnote
                     texfile.write("\\marginnote{")
@@ -136,15 +186,15 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
                         texfile.write(daymonth(Fahrt['StartDatum']))
                         if Fahrt["Startzeit"] and Fahrt["Endzeit"]:
                             texfile.write(" \\\\ ")
-                            texfile.write(Fahrt['Startzeit']+ " - " +  Fahrt['Endzeit'])
+                            texfile.write(Fahrt['Startzeit'] + " - " + Fahrt['Endzeit'])
                         elif Fahrt["Startzeit"]:
                             texfile.write(" \\\\ ")
                             texfile.write("ab " + Fahrt['Startzeit'])
                     texfile.write("}\n")
 
                     # Print Fliesstext
-                    if(Fahrt['PrintFliesstext']):
-                        texfile.write("\\mbox{}\\\\\\mbox{}"+Fahrt['Fliesstext'])
+                    if (Fahrt['PrintFliesstext']):
+                        texfile.write("\\mbox{}\\\\\\mbox{}" + Fahrt['Fliesstext'])
 
                     # Print items
                     texfile.write("\\begin{itemize}\n")
@@ -163,16 +213,16 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
                             texfile.write("    \\item Ansprechpartnerin: ")
                         else:
                             texfile.write("    \\item Ansprechpartner: ")
-                        texfile.write(ansprechpartner[0] + " \\href{"+ "mailto:"  +ansprechpartner[1] +
-                                      "}{"+ ansprechpartner[1] + "}\n")
-                        if(Fahrt['AnsprechpartnerKCW']):
+                        texfile.write(ansprechpartner[0] + " \\href{" + "mailto:" + ansprechpartner[1] +
+                                      "}{" + ansprechpartner[1] + "}\n")
+                        if (Fahrt['AnsprechpartnerKCW']):
                             if ansprechpartnerkcw:
                                 if ansprechpartnerkcw[2] == 'w':
                                     texfile.write("    \\item Ansprechpartnerin KCW: ")
                                 else:
                                     texfile.write("    \\item Ansprechpartner KCW: ")
-                                texfile.write(ansprechpartnerkcw[0] + " \\href{"+ "mailto:"  +ansprechpartnerkcw[1] +
-                                              "}{"+ ansprechpartnerkcw[1] + "}\n")
+                                texfile.write(ansprechpartnerkcw[0] + " \\href{" + "mailto:" + ansprechpartnerkcw[1] +
+                                              "}{" + ansprechpartnerkcw[1] + "}\n")
                             else:
                                 texfile.write("\\item {\\color{red} Ansprechpartner " + Fahrt['AnsprechpartnerKCW'] +
                                               " konnte nicht gefunden werden. Bitte Ansprechpartner liste überprüfen}")
@@ -192,38 +242,7 @@ def texport(terminefilename, spartenlisteold, preamble, filenameOut, ansprechpar
         fahrt.pop('PrintFliesstext')
 
 
-def markhyperlinks(string):
-
-    outputstring = ""
-    currentword = ""
-    for char in string:
-        if char == " " or char == "\n" or char == "," or char == ";":
-            if currentword[0:4] =="www.":
-                currentword = "\\href{" + currentword + "}{"+currentword+"}"
-            outputstring += currentword + char
-            currentword = ""
-        else:
-            currentword += char
-    if currentword[0:4] =="www.":
-        currentword = "\\url{" + currentword + "}"
-    outputstring += currentword
-    return outputstring
-
-def clearfliesstext(dict):
-    """
-    Deltes \n at the end
-    """
-
-    for dic in dict:
-        string = dic['Fliesstext']
-        if string:
-            char = string[-1]
-            while char == "\n":
-                string = string[:-1]
-                char = string[-1]
-            dic['Fliesstext'] = string
-
-class ICSexport():
+class ExportIcs(Export):
 
     def __init__(self, terminefilename, ansprechpartnerliste):
         self.termineliste = terminefilename
@@ -245,8 +264,8 @@ class ICSexport():
         event = Event()
         event.add('name', self.termineliste[number]['Fahrtname'])
         event.add('description', self.getdescription(number))
-        event.add('dtstart', self.getdate("Start",number))
-        event.add('dtend', self.getdate("End",number))
+        event.add('dtstart', self.getdate("Start", number))
+        event.add('dtend', self.getdate("End", number))
         self.icsfile.add_component(event)
 
     def getdescription(self, number):
@@ -261,7 +280,7 @@ class ICSexport():
         # -> same for non KCW Ansprechpartner
         pass
 
-    def getdate(self, type,number):
+    def getdate(self, type, number):
         """
         If startzeit but no endzeit just assume 4 hours
         Names not working
@@ -272,10 +291,10 @@ class ICSexport():
 
         if zeit and not date:
             date = self.termineliste[number][f'StartDatum']
-            date =  datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)#, tzinfo=pytz.utc)
+            date = datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)  # , tzinfo=pytz.utc)
             return date
         elif zeit:
-            date =  datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)#, tzinfo=pytz.utc)
+            date = datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)  # , tzinfo=pytz.utc)
             return date
         elif date:
             return datetime.datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
