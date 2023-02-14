@@ -2,7 +2,7 @@ from EditFahrten import appenddictionarylist
 import datetime
 import tkinter as tk
 from tkinter import ttk
-from TeXport import ICSexport
+from Export import ICSexport
 
 class Mainwin(tk.Tk):
     

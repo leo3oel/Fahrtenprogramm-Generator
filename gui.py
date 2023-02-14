@@ -4,7 +4,7 @@ import tkinter.ttk as ttk
 from tkinter import Scrollbar
 from tkinter import scrolledtext
 import datetime
-from TeXport import *
+from Export import *
 #from changedictlist import *
 from basicgui import hline
 from EditFahrten import EditFahrten
