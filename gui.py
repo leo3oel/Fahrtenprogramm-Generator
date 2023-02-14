@@ -172,43 +172,50 @@ class MainWin(tk.Tk):
 
         self.__exportwindow.columnconfigure(0, weight =1)
         self.__exportwindow.columnconfigure(1, weight =1)
-
+        row = 0
         dateiname_label = tk.Label(self.__exportwindow, text="Dateinamen:")
-        dateiname_label.grid(column=0,row=0,padx=5,pady=5, sticky=tk.W)
+        dateiname_label.grid(column=0,row=row,padx=5,pady=5, sticky=tk.W)
 
         dateiname_button = tk.Button(self.__exportwindow, text="Ordner/Dateinamen auswaehlen",
                                      command=self.__selectexportfilename)
-        dateiname_button.grid(column=1,row=0,padx=5,pady=5, sticky=tk.W)
+        dateiname_button.grid(column=1,row=row,padx=5,pady=5, sticky=tk.W)
 
+        row += 1
         self.__tex = tk.IntVar()
         cb_tex = tk.Checkbutton(self.__exportwindow, text="LaTeX Datei", variable=self.__tex, onvalue=1,offvalue=0)
-        cb_tex.grid(column=0,row=2, columnspan=2,padx=5,pady=5)
+        cb_tex.grid(column=0, row=row, padx=5, pady=5)
         self.__tex.trace("w", self.__toggleLaTeX)
 
+        self.__texWithoutChapter = tk.IntVar()
+        cb_tex = tk.Checkbutton(self.__exportwindow, text="LaTeX Datei ohne Kapitel", variable=self.__texWithoutChapter
+                                , onvalue=1, offvalue=0)
+        cb_tex.grid(column=1, row=row, padx=5, pady=5)
+        self.__texWithoutChapter.trace("w", self.__toggleLaTeX)
+
+        row += 1
         pdf = tk.IntVar()
-        self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument, benötigt LaTeX Installation",
+        self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument(e) erstellen, benötigt LaTeX Installation",
                                        variable=pdf, onvalue=1,offvalue=0)
-        self.__cb_pdf.grid(column=0,row=3, columnspan=2,padx=5,pady=5)
+        self.__cb_pdf.grid(column=0,row=row, columnspan=2,padx=5,pady=5)
         self.__cb_pdf.grid_remove()
 
-        self.__preamble_label = tk.Label(self.__exportwindow, text="Preamble:")
-        self.__preamble_label.grid(column=0,row=4,padx=5,pady=5, sticky=tk.W)
-        self.__preamble_label.grid_remove()
+        row += 1
+        displayPdf = tk.IntVar()
+        self.__displayPdfBox = tk.Checkbutton(self.__exportwindow, text="PDF(s) Anzeigen, benötigt Zathura",
+                                       variable=displayPdf, onvalue=1, offvalue=0)
+        self.__displayPdfBox.grid(column=0, row=row, columnspan=2, padx=5, pady=5)
+        self.__displayPdfBox.grid_remove()
 
+        row += 1
         keeplogs = tk.IntVar()
         self.__keeplogs = tk.Checkbutton(self.__exportwindow, text="Log Dateien behalten",
                                          variable=keeplogs, onvalue=1,offvalue=0)
-        self.__keeplogs.grid(column=0,row=4, columnspan=2,padx=5,pady=5)
+        self.__keeplogs.grid(column=0,row=row, columnspan=2,padx=5,pady=5)
         self.__keeplogs.grid_remove()
 
-        """
-        self.__preamble_button = tk.Button(self.__exportwindow, text="Preamble öffnen", command=self.__openpreamble)
-        self.__preamble_button.grid(column=1,row=5,padx=5,pady=5, sticky=tk.W)
-        self.__preamble_button.grid_remove()
-        """
-
         export_btn = tk.Button(self.__exportwindow, text="Exportieren",
-                               command=lambda: self.__export(self.__tex.get(), pdf.get(), keeplogs.get()))
+                               command=lambda: self.__export(self.__tex.get(), self.__texWithoutChapter.get(),
+                                                             pdf.get(), displayPdf.get(), keeplogs.get()))
         export_btn.grid(column=0,row=50, columnspan=2,padx=5,pady=5)
 
         self.__exportwindow.mainloop()
@@ -249,12 +256,14 @@ class MainWin(tk.Tk):
 
     def __toggleLaTeX(self, *args):
 
-        if self.__tex.get():
+        if self.__tex.get() or self.__texWithoutChapter.get():
             self.__cb_pdf.grid()
             self.__keeplogs.grid()
+            self.__displayPdfBox.grid()
         else:
             self.__cb_pdf.grid_remove()
             self.__keeplogs.grid_remove()
+            self.__displayPdfBox.grid_remove()
 
 
     def __openpreamble(self):
@@ -277,22 +286,22 @@ class MainWin(tk.Tk):
             os.remove(self.__exportfilename)
 
 
-    def __export(self, tex, pdf, logs):
+    def __export(self, tex, texWithoutChapter, pdf, displayPdf, logs):
 
         if not self.__exportfilename:
-            msgbox.showerror("Fehler", "Bitte Zieldatei auswählen")
+            msgbox.showerror("Fehler", "Bitte Zieldatei auswählen", parent = self.__exportwindow)
             return 0
 
-        texfilename = self.__exportfilename+".tex"
+        if displayPdf and not pdf:
+            msgbox.showerror("Fehler", "Datei muss zum anzeigen erst generiert werden", parent=self.__exportwindow)
+            return 0
 
-        # TODO: change this
         self.__preamble_filename = "appearancespecific/preamble.tex"
-        if tex:
-            texport = ExportTex(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename,
-                                self.__preamble_filename, self.__vorbemerkung)
-            texport.generateTex(True, True)
-        if tex and pdf:
-            texport.generatePdfs(logs, True, True, True)
+        texport = ExportTex(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename,
+                            self.__preamble_filename, self.__vorbemerkung)
+        texport.generateTex(tex, texWithoutChapter)
+        if pdf:
+            texport.generatePdfs(logs, displayPdf, tex, texWithoutChapter)
 
         self.__exportwindow.destroy()
 
