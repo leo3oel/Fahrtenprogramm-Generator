@@ -56,7 +56,7 @@ class MainWin(tk.Tk):
             widget.destroy()
 
         self.__makemenubar()
-        self.__terminedic = structurizelist(self.__terminedic)
+        self.__terminedic = Export.structurizeList(self.__terminedic)
 
         startdatum_label = []
         enddatum_label = []
@@ -125,21 +125,22 @@ class MainWin(tk.Tk):
 
 
     def __openfile(self):
-
         if not self.__file:
             self.__file = filedialog.askopenfile()
-            if self.__file:
-                self.__filename = self.__file.name
-                self.__file.close()
-                with open(self.__filename, 'r', encoding='utf8') as file:
-                    decoded = json.load(file, object_hook=DecodeDateTime)
-
-                self.__terminedic = decoded[0]
-                self.__ansprechpartner = decoded[1]
-                self.__sparten = decoded[2]
-                self.__vorbemerkung = decoded[3]
-
-                self.printfahrten()
+            try:
+                if self.__file:
+                    self.__filename = self.__file.name
+                    self.__file.close()
+                    with open(self.__filename, 'r', encoding='utf8') as file:
+                        decoded = json.load(file, object_hook=DecodeDateTime)
+                    self.__terminedic = decoded[0]
+                    self.__ansprechpartner = decoded[1]
+                    self.__sparten = decoded[2]
+                    self.__vorbemerkung = decoded[3]
+                    self.printfahrten()
+            except:
+                msgbox.showerror("Cannot Read File", "File is unreadable")
+                self.__file = None
 
 
     def __savefile(self):
@@ -207,7 +208,7 @@ class MainWin(tk.Tk):
         """
 
         export_btn = tk.Button(self.__exportwindow, text="Exportieren",
-                               command=lambda: self.__export(self.__tex.get(),pdf.get(), keeplogs.get()))
+                               command=lambda: self.__export(self.__tex.get(), pdf.get(), keeplogs.get()))
         export_btn.grid(column=0,row=50, columnspan=2,padx=5,pady=5)
 
         self.__exportwindow.mainloop()
@@ -246,17 +247,12 @@ class MainWin(tk.Tk):
         self.__vorbemerkung = text
         topwin.destroy()
 
-    # TODO: delete self.preamble
     def __toggleLaTeX(self, *args):
 
         if self.__tex.get():
-            #self.__preamble_label.grid()
-            #self.__preamble_button.grid()
             self.__cb_pdf.grid()
             self.__keeplogs.grid()
         else:
-            #self.__preamble_label.grid_remove()
-            #self.__preamble_button.grid_remove()
             self.__cb_pdf.grid_remove()
             self.__keeplogs.grid_remove()
 
@@ -292,10 +288,11 @@ class MainWin(tk.Tk):
         # TODO: change this
         self.__preamble_filename = "appearancespecific/preamble.tex"
         if tex:
-            texport(self.__terminedic, self.__sparten, self.__preamble_filename, texfilename,
-                    self.__ansprechpartner, self.__vorbemerkung)
-        if pdf:
-            makepdfanddisplay(texfilename, logs)
+            texport = ExportTex(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename,
+                                self.__preamble_filename, self.__vorbemerkung)
+            texport.generateTex(True, True)
+        if tex and pdf:
+            texport.generatePdfs(logs, True, True, True)
 
         self.__exportwindow.destroy()
 
