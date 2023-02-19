@@ -498,61 +498,34 @@ class ExportHTML(Export):
 
 class ExportIcs(Export):
 
-    def __init__(self, terminefilename, ansprechpartnerliste):
-        self.termineliste = terminefilename
-        self.ansprechpartner = ansprechpartnerliste
-        self.icsfile = Calendar()
-        self.icsfile.add('prodid', '-//Paddel Kalender//')
-        self.icsfile.add('version', '2.0')
+    def __init__(self, termineDict, spartenList, personsList, filename, bemerkungen=None):
+        super().__init__(termineDict, spartenList, personsList, filename, bemerkungen)
+        self._printedDates = []
 
-    def export(self, filename):
-        if not self.termineliste:
-            return 0
-        structurizelist(self.termineliste)
-        for fahrtindex in range(len(self.termineliste)):
-            self.makecsvdate(fahrtindex)
-        with open(filename, "wb") as file:
-            file.write(self.icsfile.to_ical())
+    def generateIcs(self):
+        icsFile = self._initFile()
+        self._formatDictHtml() # add to export
 
-    def makecsvdate(self, number):
-        event = Event()
-        event.add('name', self.termineliste[number]['Fahrtname'])
-        event.add('description', self.getdescription(number))
-        event.add('dtstart', self.getdate("Start", number))
-        event.add('dtend', self.getdate("End", number))
-        self.icsfile.add_component(event)
+        self._clearDict() # add to export
 
-    def getdescription(self, number):
-        description = ''
-        for item in self.termineliste[number]['items']:
-            description += item + "\n"
+        """
+        move getAnsprechpartner from Html to export, Reuse it here
+        """
 
-    def getansprechpartnerasstring(self, number):
-        # Get Ansprechpartner index
-        # -> Gender correctly
-        # -> print name + mail
-        # -> same for non KCW Ansprechpartner
+    def _initFile(self):
+        icsFile = Calendar()
+        icsFile.add('prodid', '-//Paddel Kalender//mxm.dk//')
+        icsFile.add('version', '2.0')
+        return icsFile
+
+    def _generateTermine(self):
+        """
+        Check for Duplicates, print only One
+        """
         pass
 
-    def getdate(self, type, number):
-        """
-        If startzeit but no endzeit just assume 4 hours
-        Names not working
-        """
+    def _generateSingleTermin(self, termin):
+        pass
 
-        date = self.termineliste[number][f'{type}Datum']
-        zeit = self.termineliste[number][f'{type}zeit']
-
-        if zeit and not date:
-            date = self.termineliste[number][f'StartDatum']
-            date = datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)  # , tzinfo=pytz.utc)
-            return date
-        elif zeit:
-            date = datetime.datetime(date.year, date.month, date.day, zeit.hour, zeit.minute, 0)  # , tzinfo=pytz.utc)
-            return date
-        elif date:
-            return datetime.datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
-        else:
-            date = self.termineliste[number][f'StartDatum']
-            date += datetime.timedelta(days=1)
-            return datetime.datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=pytz.utc)
+    def _writeToFile(self, icsFile):
+        pass
