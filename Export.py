@@ -52,6 +52,54 @@ class Export:
             out += "    "
         return out
 
+    def _formatDictHtml(self):
+        for termin in self._termineDict:
+            items = []
+            for item in range(len(termin['items'])):
+                items.append(self._formatLinksHTML(termin['items'][item]))
+            fliessText = self._formatLinksHTML(termin['Fliesstext'])
+            tempDict = {'PrintFliesstext': fliessText, 'Printitems': items}
+            termin.update(tempDict)
+
+    def _formatLinksHTML(self, string):
+        words = string.split()
+        for index, word in enumerate(words):
+            if word.startswith("www."):
+                words[index] = f'<a href="{word}">{word}</a>'
+        return " ".join(words)
+
+    def _clearDict(self):
+        for termin in self._termineDict:
+            if "Printitems" in termin:
+                termin.pop("Printitems")
+            if "PrintFliesstext" in termin:
+                termin.pop("PrintFliesstext")
+
+    def _getAnsprechpartnerHtml(self, termin):
+        ansprechpartner = None
+        ansprechpartnerKcw = None
+        if termin['Ansprechpartner'] not in self._personsListe:
+            ansprechpartner = '<h1 style="color:red">Ansprechpartner nicht in Ansprechpartner Liste gefunden</h1>'
+        if termin['AnsprechpartnerKCW'] and (termin['AnsprechpartnerKCW'] not in self._personsListe):
+            ansprechpartnerKcw = '<h1 style="color:red">Ansprechpartner nicht in Ansprechpartner Liste gefunden</h1>'
+        for item in self._personsListe:
+            if termin['Ansprechpartner'] in item:
+                ansprechpartner = self._formatAnsprechpartner(item)
+        if "AnsprechpartnerKCW" in termin:
+            for item in self._personsListe:
+                if termin['AnsprechpartnerKCW'] in item:
+                    ansprechpartnerKcw = self._formatAnsprechpartner(item)
+        return ansprechpartner, ansprechpartnerKcw
+    
+    def _formatAnsprechpartner(self, ansprechpartner):
+        if ansprechpartner[2] == "w":
+            anOut = "Ansprechpartnerin: "
+        else:
+            anOut = "Ansprechpartner: "
+        anOut += f'<a href="mailto:{ansprechpartner[1]}">{ansprechpartner[0]}</a>'
+        return anOut
+
+
 class ExportTex(Export):
 
     def __init__(self, termineDict, spartenList, personsList, filename, preamble, bemerkungen=None):
@@ -340,31 +388,8 @@ class ExportHTML(Export):
     def _getSurrounding(self, tag, text):
         return f"<{tag}>" + text + f"</{tag}>"
 
-    def _formatDict(self):
-        for termin in self._termineDict:
-            items = []
-            for item in range(len(termin['items'])):
-                items.append(self._formatLinks(termin['items'][item]))
-            fliessText = self._formatLinks(termin['Fliesstext'])
-            tempDict = {'PrintFliesstext': fliessText, 'Printitems': items}
-            termin.update(tempDict)
-
-    def _formatLinks(self, string):
-        words = string.split()
-        for index, word in enumerate(words):
-            if word.startswith("www."):
-                words[index] = f'<a href="{word}">{word}</a>'
-        return " ".join(words)
-
-    def _clearDict(self):
-        for termin in self._termineDict:
-            if "Printitems" in termin:
-                termin.pop("Printitems")
-            if "PrintFliesstext" in termin:
-                termin.pop("PrintFliesstext")
-
     def generateHTML(self):
-        self._formatDict()
+        self._formatDictHtml()
         head = self._generateHead()
         spartenOutput = self._generateSpartenOutput(self._spartenListe)
         foot = "\n</body>\n</html>"
@@ -446,7 +471,7 @@ class ExportHTML(Export):
         if termin['PrintFliesstext']:
             out += self.tab(3) + termin['PrintFliesstext'] + "\n"
         out += self.tab(3) + '<ul style="padding-left: 80px">' + "\n"
-        ansprechpartner, ansprechpartnerKcw = self._getAnsprechpartner(termin)
+        ansprechpartner, ansprechpartnerKcw = self._getAnsprechpartnerHtml(termin)
         out += self.tab(4) + self._getSurrounding("li", ansprechpartner) + "\n"
         if ansprechpartnerKcw:
             out += self.tab(4) + self._getSurrounding("li", ansprechpartnerKcw) + "\n"
@@ -457,30 +482,6 @@ class ExportHTML(Export):
         out += self.tab(2) + "</td>" + "\n"
         out += self.tab() + "</tr>" + "\n"
         return out
-
-    def _getAnsprechpartner(self, termin):
-        ansprechpartner = None
-        ansprechpartnerKcw = None
-        if termin['Ansprechpartner'] not in self._personsListe:
-            ansprechpartner = '<h1 style="color:red">Ansprechpartner nicht in Ansprechpartner Liste gefunden</h1>'
-        if termin['AnsprechpartnerKCW'] and (termin['AnsprechpartnerKCW'] not in self._personsListe):
-            ansprechpartnerKcw = '<h1 style="color:red">Ansprechpartner nicht in Ansprechpartner Liste gefunden</h1>'
-        for item in self._personsListe:
-            if termin['Ansprechpartner'] in item:
-                ansprechpartner = self._formatAnsprechpartner(item)
-        if "AnsprechpartnerKCW" in termin:
-            for item in self._personsListe:
-                if termin['AnsprechpartnerKCW'] in item:
-                    ansprechpartnerKcw = self._formatAnsprechpartner(item)
-        return ansprechpartner, ansprechpartnerKcw
-
-    def _formatAnsprechpartner(self, ansprechpartner):
-        if ansprechpartner[2] == "w":
-            anOut = "Ansprechpartnerin: "
-        else:
-            anOut = "Ansprechpartner: "
-        anOut += f'<a href="mailto:{ansprechpartner[1]}">{ansprechpartner[0]}</a>'
-        return anOut
 
     def _generateTableClosing(self):
         out = "</table>\n"
@@ -504,9 +505,10 @@ class ExportIcs(Export):
 
     def generateIcs(self):
         icsFile = self._initFile()
-        self._formatDictHtml() # add to export
-
-        self._clearDict() # add to export
+        self._formatDictHtml()
+        icsFile = self._generateTermine(icsFile)
+        self._writeToFile(icsFile, self._filename+".ics")
+        self._clearDict()
 
         """
         move getAnsprechpartner from Html to export, Reuse it here
@@ -518,14 +520,89 @@ class ExportIcs(Export):
         icsFile.add('version', '2.0')
         return icsFile
 
-    def _generateTermine(self):
+    def _generateTermine(self, icsFile):
         """
         Check for Duplicates, print only One
         """
-        pass
+        for termin in self._termineDict:
+            if (termin['Fahrtname'] not in self._printedDates) and (termin['StartDatum'] not in self._printedDates):
+                sparten = self._getOtherSpartenWithTermin(termin)
+                icsFile = self._generateSingleTermin(termin, icsFile, sparten)
+        return icsFile
 
-    def _generateSingleTermin(self, termin):
-        pass
+    def _getOtherSpartenWithTermin(self, inputTermin):
+        sparten = [inputTermin['Sparte']]
+        for termin in self._termineDict:
+            if (termin['Fahrtname'] == inputTermin['Fahrtname']) \
+                    and (termin['StartDatum'] == inputTermin['StartDatum']) \
+                    and (termin['Sparte'] not in sparten):
+                sparten.append(termin['Sparte'])
+        return sparten
 
-    def _writeToFile(self, icsFile):
-        pass
+    def _generateSingleTermin(self, termin, icsFile, sparten):
+        event = Event()
+        event.add('summary', termin['Fahrtname'])
+        startDatetime, endDatetime = self._formatDateTime(termin)
+        event.add('dtstart', startDatetime)
+        event.add('dtend', endDatetime)
+        event.add('description', self._getDescription(termin))
+        icsFile.add_component(event)
+        return icsFile
+
+    def _formatDateTime(self, termin):
+        startHour = None
+        startMin = None
+        endHour = None
+        endMin = None
+        startDate = termin['StartDatum']
+        if termin['Startzeit']:
+            startHour, startMin = self._getTime(termin['Startzeit'])
+            if termin['Endzeit']:
+                endHour, endMin = self._getTime(termin['Endzeit'])
+            else:
+                endHour = self._getStandardDuration(startHour)
+                endMin = startMin
+        if termin['EndDatum']:
+            endDate = termin['EndDatum']+datetime.timedelta(days=1)
+        elif not termin['Startzeit']:
+            endDate = startDate+datetime.timedelta(days=1)
+        else:
+            endDate = startDate
+        if startHour:
+            icalStartDate = datetime.datetime(startDate.year, startDate.month, startDate.day, 
+                                          startHour, startMin, 0, tzinfo=pytz.timezone("Europe/Berlin"))
+        else:
+            icalStartDate = datetime.datetime(startDate.year, startDate.month, startDate.day, tzinfo=pytz.timezone("Europe/Berlin"))
+        if endHour:
+            icalEndDate = datetime.datetime(endDate.year, endDate.month, endDate.day, 
+                                          endHour, endMin, 0, tzinfo=pytz.timezone("Europe/Berlin"))
+        else:
+            icalEndDate = datetime.datetime(endDate.year, endDate.month, endDate.day, tzinfo=pytz.timezone("Europe/Berlin"))
+        return icalStartDate, icalEndDate
+
+    def _getTime(self, time):
+        hour = int(time[0:2])
+        min = int(time[-2:])
+        return hour, min
+    
+    def _getStandardDuration(self, startHour):
+        endHour = startHour + 4
+        if endHour>=24:
+            endHour-=24
+        return endHour
+    
+    def _getDescription(self, termin):
+        description = ""
+        ansprechpartner, ansprechpartnerKCW = self._getAnsprechpartnerHtml(termin)
+        description += self._formatAnsprechpartner(ansprechpartner) + "\n"
+        if ansprechpartnerKCW:
+            description += self._formatAnsprechpartner(ansprechpartnerKCW) + "\n"
+        for item in termin['Printitems']:
+            description += ' - ' + item + "n"
+        description += termin['PrintFliesstext']
+        return description
+        
+
+    def _writeToFile(self, icsFile, filename):
+        with open(filename, 'wb') as file:
+            file.write(icsFile.to_ical())
