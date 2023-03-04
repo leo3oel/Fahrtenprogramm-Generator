@@ -214,6 +214,7 @@ class ExportTex(Export):
             out = "\\section*{Bemerkungen}"
             out += bemerkungen
             return out
+        return ""
 
     def __generateChapters(self):
         out = ""
