@@ -88,14 +88,17 @@ class Export:
         if "AnsprechpartnerKCW" in termin:
             for item in self._personsListe:
                 if termin['AnsprechpartnerKCW'] in item:
-                    ansprechpartnerKcw = self._formatAnsprechpartner(item)
+                    ansprechpartnerKcw = self._formatAnsprechpartner(item, True)
         return ansprechpartner, ansprechpartnerKcw
     
-    def _formatAnsprechpartner(self, ansprechpartner):
+    def _formatAnsprechpartner(self, ansprechpartner, kcw=False):
         if ansprechpartner[2] == "w":
-            anOut = "Ansprechpartnerin: "
+            anOut = "Ansprechpartnerin"
         else:
-            anOut = "Ansprechpartner: "
+            anOut = "Ansprechpartner"
+        if kcw:
+            anOut += ' KCW'
+        anOut += ": "
         anOut += f'<a href="mailto:{ansprechpartner[1]}">{ansprechpartner[0]}</a>'
         return anOut
 
@@ -525,7 +528,8 @@ class ExportIcs(Export):
         Check for Duplicates, print only One
         """
         for termin in self._termineDict:
-            if (termin['Fahrtname'] not in self._printedDates) and (termin['StartDatum'] not in self._printedDates):
+            if [termin['Fahrtname'], termin['StartDatum']] not in self._printedDates:
+                self._printedDates.append([termin['Fahrtname'], termin['StartDatum']])
                 sparten = self._getOtherSpartenWithTermin(termin)
                 icsFile = self._generateSingleTermin(termin, icsFile, sparten)
         return icsFile
@@ -545,7 +549,7 @@ class ExportIcs(Export):
         startDatetime, endDatetime = self._formatDateTime(termin)
         event.add('dtstart', startDatetime)
         event.add('dtend', endDatetime)
-        event.add('description', self._getDescription(termin))
+        event.add('description', self._getDescription(termin, sparten))
         icsFile.add_component(event)
         return icsFile
 
@@ -562,7 +566,9 @@ class ExportIcs(Export):
             else:
                 endHour = self._getStandardDuration(startHour)
                 endMin = startMin
-        if termin['EndDatum']:
+        if termin['EndDatum'] and termin['Startzeit']:
+            endDate = termin['EndDatum']
+        elif termin['EndDatum']:
             endDate = termin['EndDatum']+datetime.timedelta(days=1)
         elif not termin['Startzeit']:
             endDate = startDate+datetime.timedelta(days=1)
@@ -591,17 +597,24 @@ class ExportIcs(Export):
             endHour-=24
         return endHour
     
-    def _getDescription(self, termin):
+    def _getDescription(self, termin, sparten):
         description = ""
+        if len(sparten)>1:
+            description += "Sparten: "
+        else:
+            description += "Sparte: "
+        for sparte in sparten:
+            description += sparte + ", "
+        description = description[:-2]
+        description += '\n'
         ansprechpartner, ansprechpartnerKCW = self._getAnsprechpartnerHtml(termin)
-        description += self._formatAnsprechpartner(ansprechpartner) + "\n"
+        description += ansprechpartner + "\n"
         if ansprechpartnerKCW:
-            description += self._formatAnsprechpartner(ansprechpartnerKCW) + "\n"
+            description += ansprechpartnerKCW + "\n"
         for item in termin['Printitems']:
-            description += ' - ' + item + "n"
+            description += ' - ' + item + "\n"
         description += termin['PrintFliesstext']
         return description
-        
 
     def _writeToFile(self, icsFile, filename):
         with open(filename, 'wb') as file:
