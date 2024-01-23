@@ -4,7 +4,6 @@ import tkinter.ttk as ttk
 from tkinter import scrolledtext
 from basicgui import *
 from Editsparten import Editsparten
-# from test import testsettings
 from DateTime import *
 import datetime
 import tkcalendar

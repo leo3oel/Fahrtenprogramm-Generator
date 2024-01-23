@@ -28,7 +28,6 @@ class Export:
         """
         Deltes \n at the end
         """
-
         for dic in dict:
             string = dic['Fliesstext']
             if string:
@@ -265,10 +264,10 @@ class ExportTex(Export):
             if self.__monat < len(monatsnamen):
                 out += ("\\section*{" + monatsnamen[self.__monat] + "}")
         return out
+    
     def __generateParagraphAndMargin(self, termin, sparten):
         # Print Paragraphname
         out = "\\paragraph{" + termin['Fahrtname'] + "}"
-
         # Print Marginnote
         out += "\\marginnote{"
         if sparten:
