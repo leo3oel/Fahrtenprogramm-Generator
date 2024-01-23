@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "fahrtenprogramm-generator"
+version = "0.1.0"
+description = ""
+authors = ["Leonhard Schraut <spammailspam@aol.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+icalendar = "^5.0.11"
+tkcalendar = "^1.6.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,10 +1,12 @@
 # Fahrtenprogramm_Generator
 Python GUI to generate PDFs/HTML/iCal for appointements.
 
-## Usage
+## Setup
  - Install python and poetry
  - Run `poetry install`
  - Run `poetry run python gui.py`
+
+## Usage
  - Enter Information
    - Reponsible People
    - Divisions
