@@ -34,7 +34,7 @@ class MainWin(tk.Tk):
         self.minsize(900, 500)
         self.main_frame = tk.Frame(self)
         self.user_info_label = tk.Label(self)
-        self.wm_title("Fahrtenbuch Generator")
+        self.wm_title("Fahrtenprogramm Generator")
         self.printfahrten()
         self.mainloop()
 
@@ -119,7 +119,7 @@ class MainWin(tk.Tk):
 
     def __savefile(self):
         if not self.__file:
-            self.__file = filedialog.asksaveasfile(mode="w", initialfile=".fahrten")
+            self.__file = filedialog.asksaveasfile(mode="w", initialfile=".fahrten", encoding="utf-8")
             if self.__file:
                 self.__filename = self.__file.name
                 if self.__filename[-7:] != "fahrten":
@@ -128,7 +128,7 @@ class MainWin(tk.Tk):
                 self.__file.write(self.__makejson())
                 self.__file.close()
         else:
-            with open(self.__filename, "w") as self.__file:
+            with open(self.__filename, "w", encoding="utf-8") as self.__file:
                 self.__file.write(self.__makejson())
 
 

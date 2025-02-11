@@ -154,6 +154,11 @@ class ExportTex(Export):
         output += self.__generateFancyHead()
         output += self.__generateDocumentStart()
         output += self.__generateBemerkungen()
+        output += "\\begingroup" + "\n"
+        output += "    \\hypersetup{hidelinks}" + "\n"
+        output += "    \\tableofcontents\\thispagestyle{fancy}" + "\n"
+        output += "\\endgroup" + "\n"
+        output += "\\pagebreak[4]\n"
         output += self.__generateChapters()
         output += self.__generateClosing()
         filename = self._filename + ".tex"
@@ -170,7 +175,7 @@ class ExportTex(Export):
         self.__writeToFile(output, filename)
 
     def __readPreamble(self):
-        with open(self._preamble) as preamble:
+        with open(self._preamble, encoding="utf-8") as preamble:
             preamble = preamble.read()
         return preamble
 
@@ -199,11 +204,6 @@ class ExportTex(Export):
 
     def __generateDocumentStart(self, toc = True):
         out = "\\begin{document}\n\n"
-        if toc:
-            out += "\\begingroup" + "\n"
-            out += "    \\hypersetup{hidelinks}" + "\n"
-            out += "    \\tableofcontents\\thispagestyle{fancy}" + "\n"
-            out += "\\endgroup" + "\n"
         out += "\\reversemarginpar" + "\n" + "\n"
         return out
 
@@ -379,7 +379,7 @@ class ExportTex(Export):
             os.remove(exportfilename + ".log")
 
     def __writeToFile(self, string, filename):
-        with open(filename, 'w') as file:
+        with open(filename, 'w', encoding="utf-8") as file:
             file.write(string)
 
 
@@ -493,7 +493,7 @@ class ExportHTML(Export):
     def _writeToFiles(self, spartenListe, head, spartenBodys, foot):
         for index, sparte in enumerate(spartenListe):
             filename = self._filename + f"-{sparte}.html"
-            with open(filename, 'w') as file:
+            with open(filename, 'w', encoding="utf-8") as file:
                 file.write(head)
                 file.write(spartenBodys[index])
                 file.write(foot)
