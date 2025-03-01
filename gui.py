@@ -35,6 +35,7 @@ class MainWin(tk.Tk):
         self.main_frame = tk.Frame(self)
         self.user_info_label = tk.Label(self)
         self.wm_title("Fahrtenprogramm Generator")
+        self.__generate_menubar()
         self.printfahrten()
         self.mainloop()
 
@@ -47,7 +48,6 @@ class MainWin(tk.Tk):
             self.__savefile()
         for widget in self.__frame.winfo_children(): # destroy all widgets
             widget.destroy()
-        self.__makemenubar()
         self.__terminedic = Export.structurizeList(self.__terminedic)
         startdatum_label = []
         enddatum_label = []
@@ -87,13 +87,17 @@ class MainWin(tk.Tk):
                 edit_buttons[increment-1].grid(column=4, row=increment+2,padx=5,pady=5,sticky=tk.E)
         self.__frame.update()
 
-    def __makemenubar(self):
+    def __generate_menubar(self):
+        #TODO Clean up menubar
         mn = tk.Menu(self)
         self.config(menu=mn)
-        mn.add_command(label = "Öffnen", command=self.__openfile)
-        mn.add_command(label = "Speichern", command=self.__savefile)
-        mn.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
-        mn.add_command(label="Exportieren", command=self.__exportwin)
+        self["menu"] = mn
+        file_menu = tk.Menu(mn, tearoff=0)
+        file_menu.add_command(label="Öffnen", command=self.__openfile)
+        file_menu.add_command(label="Speichern", command=self.__savefile)
+        file_menu.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
+        file_menu.add_command(label="Exportieren", command=self.__exportwin)
+        mn.add_cascade(label="Datei", menu=file_menu)  # Add the file_menu to the main menu
 
     def __editfahrt(self, number):
         EditFahrten(self, self.__sparten, self.__terminedic, self.__ansprechpartner, number)
