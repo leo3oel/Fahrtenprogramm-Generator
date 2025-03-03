@@ -367,10 +367,10 @@ class ExportTex(Export):
         if display:
             if platform.system() == "Windows":
                 os.startfile(filename[:-3] + "pdf")
-        elif platform.system() == "Darwin":
-            subprocess.Popen(["open", filename[:-3] + "pdf"])
-        else:
-            subprocess.Popen(["xdg-open", filename[:-3] + "pdf"])
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", filename[:-3] + "pdf"])
+            else:
+                subprocess.Popen(["xdg-open", filename[:-3] + "pdf"])
         os.chdir(cwd)
 
     def __deleteLatexLogs(self, filename):
