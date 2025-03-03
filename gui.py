@@ -88,16 +88,22 @@ class MainWin(tk.Tk):
         self.__frame.update()
 
     def __generate_menubar(self):
-        #TODO Clean up menubar
+        # Create the main menu
         mn = tk.Menu(self)
         self.config(menu=mn)
-        self["menu"] = mn
+        
+        # Create the file menu
         file_menu = tk.Menu(mn, tearoff=0)
         file_menu.add_command(label="Öffnen", command=self.__openfile)
         file_menu.add_command(label="Speichern", command=self.__savefile)
-        file_menu.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
-        file_menu.add_command(label="Exportieren", command=self.__exportwin)
         mn.add_cascade(label="Datei", menu=file_menu)  # Add the file_menu to the main menu
+        
+        # Create the edit menu
+        edit_menu = tk.Menu(mn, tearoff=0)
+        edit_menu.add_command(label="Vorbemerkung bearbeiten", command=self.__vorbemerkungbearbeiten)
+        edit_menu.add_command(label="Exportieren", command=self.__exportwin)
+        mn.add_cascade(label="Bearbeiten", menu=edit_menu)  # Add the edit_menu to the main menu
+
 
     def __editfahrt(self, number):
         EditFahrten(self, self.__sparten, self.__terminedic, self.__ansprechpartner, number)
