@@ -5,6 +5,7 @@ from DateTime import daymonth
 from icalendar import Calendar, Event, vCalAddress, vText
 import pytz
 import os
+import platform
 from os.path import exists
 
 class Export:
@@ -364,7 +365,12 @@ class ExportTex(Export):
         if not logs:
             self.__deleteLatexLogs(filename)
         if display:
-            subprocess.Popen(["zathura", filename[:-3] + "pdf"])
+            if platform.system() == "Windows":
+                os.startfile(filename[:-3] + "pdf")
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", filename[:-3] + "pdf"])
+        else:
+            subprocess.Popen(["xdg-open", filename[:-3] + "pdf"])
         os.chdir(cwd)
 
     def __deleteLatexLogs(self, filename):

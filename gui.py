@@ -162,12 +162,12 @@ class MainWin(tk.Tk):
         self.__tex = tk.IntVar()
         cb_tex = tk.Checkbutton(self.__exportwindow, text="LaTeX Datei", variable=self.__tex, onvalue=1,offvalue=0)
         cb_tex.grid(column=0, row=row, padx=5, pady=5)
-        self.__tex.trace("w", self.__toggleLaTeX)
+        self.__tex.trace_add("write", self.__toggleLaTeX)
         self.__texWithoutChapter = tk.IntVar()
         cb_tex = tk.Checkbutton(self.__exportwindow, text="LaTeX Datei ohne Kapitel", variable=self.__texWithoutChapter
                                 , onvalue=1, offvalue=0)
         cb_tex.grid(column=1, row=row, padx=5, pady=5)
-        self.__texWithoutChapter.trace("w", self.__toggleLaTeX)
+        self.__texWithoutChapter.trace_add("write", self.__toggleLaTeX)
         row += 1
         pdf = tk.IntVar()
         self.__cb_pdf = tk.Checkbutton(self.__exportwindow, text="PDF Dokument(e) erstellen, benötigt LaTeX Installation",
@@ -176,7 +176,7 @@ class MainWin(tk.Tk):
         self.__cb_pdf.grid_remove()
         row += 1
         displayPdf = tk.IntVar()
-        self.__displayPdfBox = tk.Checkbutton(self.__exportwindow, text="PDF(s) Anzeigen, benötigt Zathura",
+        self.__displayPdfBox = tk.Checkbutton(self.__exportwindow, text="PDF(s) Anzeigen",
                                        variable=displayPdf, onvalue=1, offvalue=0)
         self.__displayPdfBox.grid(column=0, row=row, columnspan=2, padx=5, pady=5)
         self.__displayPdfBox.grid_remove()
