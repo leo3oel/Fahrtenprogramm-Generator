@@ -180,7 +180,7 @@ class EditFahrten(Toplevel):
         ansprech_selec = OptionMenu(self, self.__ansprechpartner_sel, *display_an)
         ansprech_selec.grid(row=6, column=1)
 
-        self.__ansprechpartner_sel.trace('w', self.__show_an_kcw)
+        self.__ansprechpartner_sel.trace_add('write', self.__show_an_kcw)
 
         # Ansprechpartner KCW
         ansprechpartner_kcw = StringVar()
@@ -292,7 +292,7 @@ class EditFahrten(Toplevel):
         ansprech_selec = OptionMenu(self, self.__ansprechpartner_sel, *display_an)
         ansprech_selec.grid(row=6, column=1)
 
-        self.__ansprechpartner_sel.trace('w', self.__show_an_kcw)
+        self.__ansprechpartner_sel.trace_add('write', self.__show_an_kcw)
 
         # Ansprechpartner KCW
         ansprechpartner_kcw = StringVar()
