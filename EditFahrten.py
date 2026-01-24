@@ -430,8 +430,27 @@ class EditFahrten(Toplevel):
             self.__delbut.grid(row=10, column=2, padx=5, pady=5, sticky=W)
             self.__delbuttonexists = True
         else:
-            self.__delbut.grid_remove()
-            self.__delbut.grid(row=9 + len(self.__item), column=2, padx=5, pady=5, sticky=W)
+            # If the old button object points to a widget that was destroyed (bad window path),
+            # recreate it. Otherwise reuse it after removing from grid.
+            try:
+                if getattr(self, "__delbut", None) is None or not self.__delbut.winfo_exists():
+                    # recreate button (previous widget was destroyed)
+                    self.__delbut = Button(self, text="löschen", command=self.__deleteitem)
+                    self.__delbuttonexists = True
+                else:
+                    # remove old placement before re-gridding
+                    try:
+                        self.__delbut.grid_remove()
+                    except tk.TclError:
+                        # if remove fails, recreate to be safe
+                        self.__delbut = Button(self, text="löschen", command=self.__deleteitem)
+                # place the (new or existing) delete button at the new row
+                self.__delbut.grid(row=9 + len(self.__item), column=2, padx=5, pady=5, sticky=W)
+            except Exception:
+                # fallback: ensure a valid button is present
+                self.__delbut = Button(self, text="löschen", command=self.__deleteitem)
+                self.__delbut.grid(row=9 + len(self.__item), column=2, padx=5, pady=5, sticky=W)
+                self.__delbuttonexists = True
 
     def __deleteitem(self):
         """
