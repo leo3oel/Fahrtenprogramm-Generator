@@ -193,12 +193,14 @@ class MainWin(tk.Tk):
         row += 1
         iCal = tk.IntVar()
         cb_ical = tk.Checkbutton(self.__exportwindow, text="iCal Datei", variable=iCal, onvalue=1, offvalue=0)
-        cb_ical.grid(column=0, row=row, columnspan=2, padx=5, pady=5)
+        cb_ical.grid(column=0, row=row, padx=5, pady=5)
+        iCalHtml = tk.IntVar()
+        cb_ical_html = tk.Checkbutton(self.__exportwindow, text="HTML Formatierung iCal", variable=iCalHtml, onvalue=1, offvalue=0)
+        cb_ical_html.grid(column=1, row=row, padx=5, pady=5)
         export_btn = tk.Button(self.__exportwindow, text="Exportieren",
                                command=lambda: self.__export(self.__tex.get(), self.__texWithoutChapter.get(),
-                                                             pdf.get(), displayPdf.get(), keeplogs.get(), html.get(), iCal.get()))
+                                                             pdf.get(), displayPdf.get(), keeplogs.get(), html.get(), iCal.get(), iCalHtml.get()))
         export_btn.grid(column=0,row=50, columnspan=2,padx=5,pady=5)
-        self.__exportwindow.mainloop()
 
 
     def __vorbemerkungbearbeiten(self):
@@ -213,7 +215,6 @@ class MainWin(tk.Tk):
         save_bt = tk.Button(vorbemerkungswindow, text="Speichern",
                             command=lambda: self.__savevorbemerkung(text_entry.get("1.0", tk.END), vorbemerkungswindow))
         save_bt.grid(column=0,row=2)
-        vorbemerkungswindow.mainloop()
 
 
     def __savevorbemerkung(self, text, topwin):
@@ -254,7 +255,7 @@ class MainWin(tk.Tk):
             os.remove(self.__exportfilename)
 
 
-    def __export(self, tex, texWithoutChapter, pdf, displayPdf, logs, html, ical):
+    def __export(self, tex, texWithoutChapter, pdf, displayPdf, logs, html, ical, icalHtml):
         if not self.__exportfilename:
             msgbox.showerror("Fehler", "Bitte Zieldatei auswählen", parent = self.__exportwindow)
             return 0
@@ -271,7 +272,7 @@ class MainWin(tk.Tk):
             htmlexport = ExportHTML(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename)
             htmlexport.generateHTML()
         if ical:
-            iCalExport = ExportIcs(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename)
+            iCalExport = ExportIcs(self.__terminedic, self.__sparten, self.__ansprechpartner, self.__exportfilename, html=icalHtml)
             iCalExport.generateIcs()
         self.__exportwindow.destroy()
 

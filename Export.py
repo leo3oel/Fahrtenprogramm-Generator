@@ -75,7 +75,7 @@ class Export:
             if "PrintFliesstext" in termin:
                 termin.pop("PrintFliesstext")
 
-    def _getAnsprechpartnerHtml(self, termin):
+    def _getAnsprechpartner(self, termin, html:bool) -> tuple:
         ansprechpartner = None
         ansprechpartnerKcw = None
         if termin['Ansprechpartner'] not in self._personsListe:
@@ -84,14 +84,14 @@ class Export:
             ansprechpartnerKcw = '<h1 style="color:red">Ansprechpartner nicht in Ansprechpartner Liste gefunden</h1>'
         for item in self._personsListe:
             if termin['Ansprechpartner'] in item:
-                ansprechpartner = self._formatAnsprechpartner(item)
+                ansprechpartner = self._formatAnsprechpartner(item, html=html)
         if "AnsprechpartnerKCW" in termin:
             for item in self._personsListe:
                 if termin['AnsprechpartnerKCW'] in item:
-                    ansprechpartnerKcw = self._formatAnsprechpartner(item, True)
+                    ansprechpartnerKcw = self._formatAnsprechpartner(item, kcw=True, html=html)
         return ansprechpartner, ansprechpartnerKcw
     
-    def _formatAnsprechpartner(self, ansprechpartner, kcw=False):
+    def _formatAnsprechpartner(self, ansprechpartner, kcw=False, html=False):
         if ansprechpartner[2] == "w":
             anOut = "Ansprechpartnerin"
         else:
@@ -99,7 +99,10 @@ class Export:
         if kcw:
             anOut += ' KCW'
         anOut += ": "
-        anOut += f'<a href="mailto:{ansprechpartner[1]}">{ansprechpartner[0]}</a>'
+        if html:
+            anOut += f'<a href="mailto:{ansprechpartner[1]}">{ansprechpartner[0]}</a>'
+        else:
+            anOut += ansprechpartner[0] + ", " + ansprechpartner[1]
         return anOut
 
 
@@ -480,7 +483,7 @@ class ExportHTML(Export):
         if termin['PrintFliesstext']:
             out += self.tab(3) + termin['PrintFliesstext'] + "\n"
         out += self.tab(3) + '<ul style="padding-left: 80px">' + "\n"
-        ansprechpartner, ansprechpartnerKcw = self._getAnsprechpartnerHtml(termin)
+        ansprechpartner, ansprechpartnerKcw = self._getAnsprechpartner(termin, html=True)
         out += self.tab(4) + self._getSurrounding("li", ansprechpartner) + "\n"
         if ansprechpartnerKcw:
             out += self.tab(4) + self._getSurrounding("li", ansprechpartnerKcw) + "\n"
@@ -508,8 +511,9 @@ class ExportHTML(Export):
 
 class ExportIcs(Export):
 
-    def __init__(self, termineDict, spartenList, personsList, filename, bemerkungen=None):
+    def __init__(self, termineDict, spartenList, personsList, filename, bemerkungen=None, html=False):
         super().__init__(termineDict, spartenList, personsList, filename, bemerkungen)
+        self._html = html
         self._printedDates = []
 
     def generateIcs(self):
@@ -604,6 +608,7 @@ class ExportIcs(Export):
         return endHour
     
     def _getDescription(self, termin, sparten):
+        new_line = "\n"
         description = ""
         if len(sparten)>1:
             description += "Sparten: "
@@ -611,14 +616,13 @@ class ExportIcs(Export):
             description += "Sparte: "
         for sparte in sparten:
             description += sparte + ", "
-        description = description[:-2]
-        description += '\n'
-        ansprechpartner, ansprechpartnerKCW = self._getAnsprechpartnerHtml(termin)
-        description += ansprechpartner + "\n"
+        description = description[:-2] + new_line
+        ansprechpartner, ansprechpartnerKCW = self._getAnsprechpartner(termin, html=self._html)
+        description += ansprechpartner + new_line
         if ansprechpartnerKCW:
-            description += ansprechpartnerKCW + "\n"
+            description += ansprechpartnerKCW + new_line
         for item in termin['Printitems']:
-            description += ' - ' + item + "\n"
+            description += ' - ' + item + new_line
         description += termin['PrintFliesstext']
         return description
 
